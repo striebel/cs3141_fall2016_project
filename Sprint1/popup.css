@@ -1,0 +1,26 @@
+body {
+	width: 450px;
+}
+
+a {
+	color: black;
+	text-decoration: none;
+}
+
+a:hover {
+	color: red;	
+}
+
+#todoContainer {
+	border: solid 1px;
+	margin-top: 15px;
+}
+
+#footer {
+	margin-top: 10px;
+}
+
+.footer {
+	color: grey;
+	text-decoration: none;
+}

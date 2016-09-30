@@ -3,9 +3,8 @@
 
 document.addEventListener("DOMContentLoaded", function() {
 
-	var button = document.getElementById('settings');
 	// Created button that, when clicked, opens a new tab in chrome
-	var button = document.getElementById('openMenu'); 
+	var button = document.getElementById('settings'); 
 	button.addEventListener('click', function() {
 		window.open("menu.html");
 	});

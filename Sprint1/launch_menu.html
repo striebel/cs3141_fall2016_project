@@ -1,12 +1,25 @@
 <html>
     <head>
-
         <script src="menu_functions.js"></script>
-
+        <link rel="stylesheet" text="text/css" href="popup.css">
     </head>
 
     <body>
-    	<input type="button" id="openMenu" value="Launch Menu" />
+        <h2>Stop Procrastaton</h2>
+        <a href="#" id="blockCurrentWebsite">Block Current Website</a></br>
+        Add Website: <input type="text" id="addWebsite" /><button id="addWebsiteBtn">Add</button>
+ 
+        <fieldset id="todoContainer">
+            <legend><h2>To Do</h2></legend>
+            </br>
+            Add task: <input type="text" id="addTodo" /><button id="addTodoBtn">Add</button></br>
+        </fieldset> 
+        
+        <div id="footer"> 
+            <a class="footer" href='#' id='blackOut'>Black Out</a>
+         |  <a class="footer" href="#" id="settings">Settings</a>
+         |  <a class="footer" href="#" id="help">Help</a>
+        </div>
     </body>
 
 </html>

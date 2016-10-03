@@ -3,9 +3,9 @@
 
 document.addEventListener("DOMContentLoaded", function() {
 
-	// Created button that, when clicked, opens a new tab in chrome
-	var button = document.getElementById('settings'); 
-	button.addEventListener('click', function() {
-		window.open("menu.html");
+	// Help button listener
+	var helpBtn = document.getElementById('help'); 
+	helpBtn.addEventListener('click', function() {
+		window.open("help.html");
 	});
 });

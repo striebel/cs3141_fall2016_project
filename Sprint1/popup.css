@@ -1,5 +1,11 @@
+html {
+	width: 450px;
+	height: 225px;
+}
+
 body {
 	width: 450px;
+    height: 225px;
 }
 
 a {

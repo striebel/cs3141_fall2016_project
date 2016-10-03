@@ -33,3 +33,21 @@ document.addEventListener("DOMContentLoaded", function() {
 		window.open("daily_timer.html");
 	});
 });
+
+document.addEventListener("DOMContentLoaded", function() {
+
+	// Created button that, when clicked, opens a new tab in chrome
+	var button = document.getElementById('todoListBtn'); 
+	button.addEventListener('click', function() {
+		window.open("todo.html");
+	});
+});
+
+document.addEventListener("DOMContentLoaded", function() {
+
+	// Created button that, when clicked, opens a new tab in chrome
+	var button = document.getElementById('helpBtn'); 
+	button.addEventListener('click', function() {
+		window.open("help.html");
+	});
+});

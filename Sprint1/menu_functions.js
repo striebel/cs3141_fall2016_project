@@ -1,7 +1,7 @@
 
 
 
-document.addEventListener("DOMContentLoaded", function() {
+$( document ).ready(function() {
 
 	// Help button listener
 	var helpBtn = document.getElementById('help'); 

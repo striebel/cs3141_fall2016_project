@@ -20,31 +20,30 @@ document.addEventListener("DOMContentLoaded", function(){
 // This fucntion initializes the counter
 function initializeClock(id, endtime) {
   var clock = document.getElementById(id);
-  var daysSpan = clock.querySelector('.days');
-  var hoursSpan = clock.querySelector('.hours');
-  var minutesSpan = clock.querySelector('.minutes');
-  var secondsSpan = clock.querySelector('.seconds');
+  var daysSpan = clock.querySelector('.days'); // Returns the value of the first element in the document with class 'days'
+  var hoursSpan = clock.querySelector('.hours'); // Returns the value of the first element in the document with class 'hours'
+  var minutesSpan = clock.querySelector('.minutes'); // Returns the value of the first element in the document with class 'minutes'
+  var secondsSpan = clock.querySelector('.seconds'); // Returns the value of the first element in the document with class 'seconds'
 
   // This function updates the counter and prints the output in a format similar to digital clocks
   function updateClock() {
     var t = getTimeRemaining(endtime);
 
     daysSpan.innerHTML = t.days;
-    hoursSpan.innerHTML = ('0' + t.hours).slice(-2);
-    minutesSpan.innerHTML = ('0' + t.minutes).slice(-2);
-    secondsSpan.innerHTML = ('0' + t.seconds).slice(-2);
+    hoursSpan.innerHTML = ('0' + t.hours).slice(-2); // Sets the html content of daysSpan to the value starting at the second element from the right of '0'+t.hours
+    minutesSpan.innerHTML = ('0' + t.minutes).slice(-2); // Sets the html content of hoursSpan to the value starting at the second element from the right of '0'+t.minutes
+    secondsSpan.innerHTML = ('0' + t.seconds).slice(-2); // Sets the html content of secondsSpan to the value starting at the second element from the right of '0'+t.seconds
 
     // Clears counter once time has run out
     if (t.total <= 0) {
-      clearInterval(timeinterval);
+      clearInterval(timeinterval); // Once time is 0 this clears the interval so the counter stops running
     }
   }
 
   updateClock();
-  var timeinterval = setInterval(updateClock, 1000);
+  var timeinterval = setInterval(updateClock, 1000); // Runs updateCLock function every 1000 milliseconds 
 }
 
-//var deadline = new Date(Date.parse(new Date()) + 15 * 24 * 60 * 60 * 1000);
 var button = document.getElementById('start');
 
 button.addEventListener('click', function(){

@@ -2,7 +2,7 @@
 function save_options() {
 	var color = document.getElementById('color').value;
 	var likesColor = document.getElementById('like').checked;
-	chrome.storage.sync.set({
+	chrome.storage.local.set({
 		favoriteColor: color,
 		likesColor: likesColor
 	}, function() {
@@ -19,7 +19,7 @@ function save_options() {
 // stored in chrome.storage.
 function restore_options() {
 	// Use default value color = 'red' and likesColor = true.
-	chrome.storage.sync.get({
+	chrome.storage.local.get({
 		favoriteColor: 'red',
 		likesColor: true
 	}, function(items) {
@@ -27,6 +27,6 @@ function restore_options() {
 		document.getElementById('like').checked = items.likesColor;
 	});
 }
+
 document.addEventListener('DOMContentLoaded', restore_options);
-document.getElementById('save').addEventListener('click',
-		save_options);
+document.getElementById('save').addEventListener('click', save_options);

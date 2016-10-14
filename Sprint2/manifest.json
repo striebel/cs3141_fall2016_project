@@ -22,6 +22,8 @@
     }
   ],
   
+  "options_page": "options.html",
+  
   "permissions": [
   "tabs", 
   "<all_urls>"

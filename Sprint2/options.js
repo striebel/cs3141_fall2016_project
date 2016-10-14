@@ -1,10 +1,8 @@
 // Saves options to chrome.storage
 function save_options() {
-	var color = document.getElementById('color').value;
-	var likesColor = document.getElementById('like').checked;
+	var blackout = document.getElementById('blackout').checked;
 	chrome.storage.local.set({
-		favoriteColor: color,
-		likesColor: likesColor
+		blackoutEnabled: blackout
 	}, function() {
 		// Update status to let user know options were saved.
 		var status = document.getElementById('status');
@@ -18,13 +16,10 @@ function save_options() {
 // Restores select box and checkbox state using the preferences
 // stored in chrome.storage.
 function restore_options() {
-	// Use default value color = 'red' and likesColor = true.
 	chrome.storage.local.get({
-		favoriteColor: 'red',
-		likesColor: true
+		blackoutEnabled: true
 	}, function(items) {
-		document.getElementById('color').value = items.favoriteColor;
-		document.getElementById('like').checked = items.likesColor;
+		document.getElementById('blackout').checked = items.blackoutEnabled;
 	});
 }
 

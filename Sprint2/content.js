@@ -9,16 +9,46 @@ currentURL = currentURL.substring(0, deleteIndex);
 // TODO: Import list from blacklist storage
 // Temporary List
 var tempBlacklist = "ask.com~yahoo.com~youtube.com";
+var tempWhitleList = "google.com~hulu.com";
 
-// Estiablish regex to match URLs
-var regex = new RegExp(currentURL);
-var blackList = tempBlacklist.split('~');
-for (var i = 0; i < blackList.length; i++) {
-	console.log(blackList[i])
-	if (currentURL.match(blackList[i])) {
-		blockWebsite();
-	}
+// Check for blackout
+var blackoutEnabled2 = true;
+function restore_options() {
+	chrome.storage.local.get({
+			blackoutEnabled: true
+		}, function(items) {
+		blackoutEnabled2 = items.blackoutEnabled;
+	});
 }
+	restore_options();
+	
+	var regex = new RegExp(currentURL);
+	debugger
+	console.log(blackoutEnabled2)
+
+	debugger
+	if (blackoutEnabled2 === true) {
+		// blackout all
+		var whiteList = tempWhitleList.split('~');
+		for (var i = 0; i < whiteList.length; i++) {
+			if (currentURL.match(whiteList[i])) {
+				break;
+			}
+			else {
+				blockWebsite();
+			}
+		}
+	}
+	else {
+		// Only blackout blackListed sites
+		// Estiablish regex to match URLs
+		var blackList = tempBlacklist.split('~');
+		for (var i = 0; i < blackList.length; i++) {
+			if (currentURL.match(blackList[i])) {
+				blockWebsite();
+			}
+		}
+	}
 
 // blockWebsite: Change inner HTML of HTML tags to tell the user they can not go to this site
 function blockWebsite() {

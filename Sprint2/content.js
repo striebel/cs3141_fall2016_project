@@ -8,47 +8,46 @@ currentURL = currentURL.substring(0, deleteIndex);
 
 // TODO: Import list from blacklist storage
 // Temporary List
-var tempBlacklist = "ask.com~yahoo.com~youtube.com";
+var tempBlacklist = "ask.com~yahoo.com";
 var tempWhitleList = "google.com~hulu.com";
 
 // Check for blackout
-var blackoutEnabled2 = true;
 function restore_options() {
 	chrome.storage.local.get({
 			blackoutEnabled: true
 		}, function(items) {
-		blackoutEnabled2 = items.blackoutEnabled;
+		block(items.blackoutEnabled)
 	});
 }
-	restore_options();
-	
-	var regex = new RegExp(currentURL);
-	debugger
-	console.log(blackoutEnabled2)
 
-	debugger
-	if (blackoutEnabled2 === true) {
+function block(blackoutEnabled) {
+	var regex = new RegExp(currentURL);
+	if (blackoutEnabled === true) {
 		// blackout all
-		var whiteList = tempWhitleList.split('~');
+		var whiteList = tempWhitleList.split('~');		// Turns whitelist into an array
+		var isOnWhiteList = false;
 		for (var i = 0; i < whiteList.length; i++) {
 			if (currentURL.match(whiteList[i])) {
+				isOnWhiteList = true;
 				break;
 			}
-			else {
-				blockWebsite();
-			}
+		}
+		if (!isOnWhiteList) {
+			blockWebsite();
 		}
 	}
 	else {
 		// Only blackout blackListed sites
 		// Estiablish regex to match URLs
-		var blackList = tempBlacklist.split('~');
+		var blackList = tempBlacklist.split('~');		// Turns blacklist into an array
 		for (var i = 0; i < blackList.length; i++) {
 			if (currentURL.match(blackList[i])) {
 				blockWebsite();
+				break;
 			}
 		}
 	}
+}
 
 // blockWebsite: Change inner HTML of HTML tags to tell the user they can not go to this site
 function blockWebsite() {
@@ -56,3 +55,5 @@ function blockWebsite() {
 		var n = d.getFullYear();
 		document.getElementsByTagName("html")[0].innerHTML = "<body><center><h1>STOP PROCRASTINATION " + n + "</h1><img src='http://www.mememaker.net/static/images/memes/4467057.jpg' /></center></body>";
 }
+
+restore_options();

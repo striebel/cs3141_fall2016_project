@@ -1,0 +1,19 @@
+
+//*****************************************************************************
+// file          : PROJECT_MGMT
+// author        : Jacob Striebel 
+// last modified : Tue, 18 Oct 2016
+//*****************************************************************************
+
+model : Contains .js, etc. files that implement functions that interact  with
+    the Chrome Extension's underlying state, e.g., scripts that access and/or
+    modify chrome.storage
+
+view : Contains .html, .css, .png, etc. files that display information to the
+    user and/or take input from the user
+
+controller : Contains .js, etc. files that implement event listeners in order
+    to deal with events triggered on pages found in the view directory;
+    scripts in the controller directory pass data between pages in view and
+    scripts in model
+

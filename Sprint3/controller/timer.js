@@ -52,9 +52,19 @@ var button = document.getElementById('start');
 button.addEventListener('click', function(){
   var limit = document.getElementById('time').value;
 
+  document.getElementById('time')
+    .addEventListener('keyup', function() {
+    event.preventDefault();
+    if (event.keyCode == 13) {
+        document.getElementById('start').click();
+    }
+
   time = limit.split(":"); // Splits user input into an array
   hour = time[0]; // First element of the array contains the hours
   minute = time[1]; // Second element contains the minutes
+
+  
+});
 
   var timeLimit = (hour * 1000 * 60 * 60)+(minute * 1000 * 60); // Convert hour and minutes into milliseconds
   var deadline = new Date(); // Create new Date object 

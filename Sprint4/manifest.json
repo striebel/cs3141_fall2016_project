@@ -1,0 +1,40 @@
+{
+    "manifest_version": 2,
+
+    "name": "StopProcrastination",
+    "description": "This extension helps you to focus while working online.",
+    "version": "1.0",
+  
+    "browser_action":
+    {
+        "default_icon": "./view/assets/icon.png",
+        "default_popup": "./view/main_menu/main_menu.html"
+    },
+  
+    "content_scripts":
+    [{
+        "matches":
+        [
+            "http://*/*",
+            "https://*/*"
+        ],
+        "js": ["./controller/content.js"],
+        "run_at": "document_end"
+    }],
+  
+    "options_page": "./view/options/options.html",
+  
+    "permissions":
+    [
+        "tabs", 
+        "<all_urls>",
+        "storage"
+    ],
+  
+    "icons":
+    {
+        "128": "./view/assets/icon.png",
+        "16": "./view/assets/icon.png",
+        "48": "./view/assets/icon.png"
+    }
+}

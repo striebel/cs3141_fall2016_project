@@ -3,68 +3,87 @@
 //                 Jacob Striebel
 // last modified : 2016 Nov 3
 
-function displayStat()
+function paintMainMenu() 
 {
-	isBlackout(function(isBlack)
+	getBlockStatus(function(blockStatus)
 	{
-		var stat0 = document.getElementById("stat0");
-		var stat1 = document.getElementById("stat1");
-		if (isBlack)
+		var noblock   = document.getElementById("no-block");
+		var blacklist = document.getElementById("black-list");
+		var whitelist = document.getElementById("white-list");
+		var blackout  = document.getElementById("black-out");
+
+		var blocktype = document.getElementById("describe-block-type");
+
+		var toggleblock = document.getElementById("toggle-block-type");
+
+		var timeron  = document.getElementById("timer-on");
+		var timeroff = document.getElementById("timer-off");
+
+		var timerstatus = document.getElementById("describe-timer-status");
+
+		var toggletimer = document.getElementById("toggle-timer-status");
+
+		noblock.textContent = "no-block";
+		blacklist.textContent = "blacklist";
+		whitelist.textContent = "whitelist";
+		blackout.textContent = "black-out";
+
+		timeron.textContent = "timer-enabled";
+		timeroff.textContent = "timer-disabled";
+
+		if (blockStatus == "noblock")
 		{
-			stat0.textContent = "Blackout: toggle locked, all sites blocked";
-			stat1.textContent = "Change blackout setting by clicking \"Quick Block\"";
+			blocktype.textContent = "no-block: no sites are currently being blocked";
+			noblock.textContent = noblock.textContent.toUpperCase();
+			blackout.textContent = blackout.textContent.toLowerCase();
 		}
-		else
+		else if (blockStatus == "blacklist")
 		{
-			getToggle(function(toggle)
-			{
-				if (toggle == "noblock")
-					stat0.textContent = "NoBlock: no sites are currently being blocked";
-
-				else if (toggle == "whitelist")
-					stat0.textContent = "Whitelist: you can only visit sites on your whitelist";
+			blocktype.textContent = "blacklist: you can visit any site that is not on your blacklist";
+			blacklist.textContent = blacklist.textContent.toUpperCase();
+			noblock.textContent = noblock.textContent.toLowerCase();
 			
-				else if (toggle == "blacklist")
-					stat0.textContent = "Blacklist: you can visit any site that is not on your blacklist";
-				
-				else
-					console.log("getToggle function failed");
+		}
+		else if (blockStatus == "whitelist")
+		{
+			blocktype.textContent = "whitelist: you can only visit sites on your whitelist";
+			whitelist.textContent = whitelist.textContent.toUpperCase();
+			blacklist.textContent = blacklist.textContent.toLowerCase();
+		}	
+		else if (blockStatus == "blackout")
+		{
+			blocktype.textContent = "black-out: all sites are blocked";
+			blackout.textContent = blackout.textContent.toUpperCase();
+			whitelist.textContent = whitelist.textContent.toLowerCase();		
+		}
+		else { console.log("getBlockStatus(): failed"); }
 
-				stat1.textContent = "Click \"Toggle\" to cycle your blocking options";
-			});
-		}			
 	});
 }
 
 document.addEventListener("DOMContentLoaded", function()
 {
-	displayStat();
-	document.getElementById("toggle").addEventListener("click", function()
+	paintMainMenu();
+	
+	document.getElementById("toggle-block-type").addEventListener("click", function()
 	{
-		isBlackout(function(isBlack)
+		getBlockStatus(function(blockStatus)
 		{
-		    if (!isBlack) getToggle(function(toggle)
+			switch (blockStatus)
 			{
-				if (toggle == "noblock")
-					setWhitelist();
-				else if (toggle == "whitelist")
-					setBlacklist();
-				else if (toggle == "blacklist")
-					setNoBlock();
-				
-				displayStat();
-			});
+				case "noblock":
+					setBlacklist(function() { paintMainMenu(); });
+					break;
+				case "blacklist":
+					setWhitelist(function() { paintMainMenu(); });
+					break;
+				case "whitelist":
+					setBlackout(function() { paintMainMenu(); });
+					break;
+				case "blackout":
+					setNoBlock(function() { paintMainMenu(); });
+					break;
+			}
 		});
 	});
 });
-
-/*
-$( document ).ready(function() {
-
-	// Help button listener
-	var helpBtn = document.getElementById('help'); 
-	helpBtn.addEventListener('click', function() {
-		window.open("help.html");
-	});
-});
-*/

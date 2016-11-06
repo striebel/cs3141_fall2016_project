@@ -1,7 +1,7 @@
 // file          : model.js
 // author        : Jacob Striebel
 //               :
-// last modified : 2016 Nov 3
+// last modified : 2016 Nov 6
 
 //  Return the map of key-value pairs to the callback function
 function getMap(callback)
@@ -12,39 +12,20 @@ function getMap(callback)
 	});
 }
 
-//  If blackout has not yet been defined in the map,
-//  then store blackout as false and return false;
-//  else return true if enabled and false if disabled
-//  to the callback
-function isBlackout(callback)
+// Return "noblock", "whitelist", "blacklist", or "blackout" depending on which is set,
+// and if none are set, set NoBlock and return "noblock"
+function getBlockStatus(callback)
 {
 	getMap(function(map)
 	{
-		if (map["blackout"] == undefined)
-		{
-			setBlackout(false);
-			callback(false);
-		}
-		else
-		{
-			callback(map["blackout"]);
-		}		
-	});
-}
-
-// Return "noblock", "whitelist", or "blacklist" depending on which is enabled
-function getToggle(callback)
-{
-	getMap(function(map)
-	{
-		if (map["toggle"] == undefined)
+		if (map["blockstatus"] == undefined)
 		{
 			setNoBlock();
 			callback("noblock");
 		}
 		else
 		{
-			callback(map["toggle"]);
+			callback(map["blockstatus"]);
 		}
 	});
 }
@@ -77,20 +58,11 @@ function setMap(pair, callback)
 	});
 }
 
-function setBlackout(blackout, callback)
-{
-	setMap({"blackout": blackout}, function()
-	{
-		if(typeof callback == "function")
-			callback();
-	});
-}
-
 // NoBlock means that neither whitelist nor blacklist is turned on
 // if blackout is enabled, all sites will still be blocked
 function setNoBlock(callback)
 {
-	setMap({"toggle": "noblock"}, function()
+	setMap({"blockstatus": "noblock"}, function()
 	{
 		if(typeof callback == "function")
 			callback();
@@ -99,7 +71,7 @@ function setNoBlock(callback)
 
 function setWhitelist(callback)
 {
-	setMap({"toggle": "whitelist"}, function()
+	setMap({"blockstatus": "whitelist"}, function()
 	{
 		if(typeof callback == "function")
 			callback();
@@ -108,7 +80,17 @@ function setWhitelist(callback)
 
 function setBlacklist(callback)
 {
-	setMap({"toggle": "blacklist"}, function()
+	setMap({"blockstatus": "blacklist"}, function()
+	{
+		if(typeof callback == "function")
+			callback();
+	});
+}
+
+
+function setBlackout(callback)
+{
+	setMap({"blockstatus": "blackout"}, function()
 	{
 		if(typeof callback == "function")
 			callback();

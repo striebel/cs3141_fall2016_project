@@ -1,4 +1,26 @@
 // file          : content.js 
+// author        :
+// last modified :
+
+// Get current URL, then remove everything besides *.*
+var currentURL = window.location.toString().toLowerCase();
+currentURL = currentURL.replace("http://", "");
+currentURL = currentURL.replace("https://", "");
+currentURL = currentURL.replace("www.", "");
+var deleteIndex = currentURL.indexOf('/');
+currentURL = currentURL.substring(0, deleteIndex);
+
+
+// Check for blackout
+function restore_options() {
+	chrome.storage.local.get({
+		blackoutEnabled: true,
+		blacklist: "",
+		whitelist: ""
+	}
+	function(items) {
+		block(items.blackoutEnabled, items.blacklist, items.whitelist)
+	});
 // author        : Jake Mager
 //                 Jacob Striebel
 // last modified : 2016 Nov 3
@@ -8,8 +30,11 @@ function performBlock()
 {
 	document.write("<html><body><center><h1>STOP PROCRASTINATING</h1></center></body></html>");
 	document.close();
+<<<<<<< HEAD
 
 	//document.getElementsByTagName("html")[0].innerHTML = 
+=======
+>>>>>>> 47cc4b990a9dc4589b39eed6e29f4ed7d8231abf
 }
 
 function testBlock()

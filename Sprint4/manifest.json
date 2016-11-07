@@ -18,7 +18,11 @@
             "http://*/*",
             "https://*/*"
         ],
-        "js": ["./controller/content.js"],
+        "js":
+		[
+			"./model/model.js",
+			"./controller/content.js"
+		],
         "run_at": "document_end"
     }],
   

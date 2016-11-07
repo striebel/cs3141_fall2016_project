@@ -1,7 +1,10 @@
+<!-- main_menu.html /-->
+
 <html>
     <head>
-        <script src="../../jquery/jquery-3.1.1.min.js"></script>
-        <script src="main_menu.js"></script>
+        <script src="../../jquery-3.1.1.min.js"></script>
+		<script src="../../model/model.js"></script>
+        <script src="../../controller/main_menu.js"></script>
         <link rel="stylesheet" text="text/css" href="popup.css">
     </head>
 
@@ -11,6 +14,27 @@
             <h2 style="display: inline-block; margin-left:5px;">Stop Procrastaton</h2>
         </div>
         <hr>
+
+			<div id="no-block"></div> |
+			<div id="black-list"></div> |
+			<div id="white-list"></div> |
+			<div id="black-out"></div>
+			<br>
+			<div id="describe-block-type"></div>
+			<br>
+			<input type="button" id="toggle-block-type" value="Toggle Block Type" />
+			
+		<hr>
+
+			<div id="timer-on"></div> |
+			<div id="timer-off"></div>
+			<br>
+			<div id="describe-timer-status"></div>
+			<br>
+			<input type="button" id="toggle-timer-status" value="Toggle Timer Status" />
+
+		<hr>
+
         <a style="display: block; padding-bottom: 2px;" href="#" id="blockCurrentWebsite">Block Current Website</a>
         Add Website: <input type="text" id="addWebsite" />  <button id="addWebsiteBtn">Add</button>
         <hr>

@@ -1,16 +1,20 @@
 <!DOCTYPE html>
-<!-- whitelist.html /-->
+<!-- whitelist.html -->
 <html>
-	<head>
-		<link rel="stylesheet" text="text/css" href="lists.css">
-	</head>
-	<body><center>
-		<h1> Whitelist </h1>
-		<h3>These are the sites that you have listed as allowed</h3> <br>
-		<br>	
-		<textarea rows="20" cols = "80">Whitelist sites go here.
-		</textarea>
-		<br>
-		<input type="button" id="whitelistbtn" value="Submit" />
-	<center></body>
+<head>
+<script src="../../model/model.js"></script>
+<script src="../../controller/whitelist.js"></script>
+</head>
+<body>
+	<h2>Whitelist</h2>
+
+	<form id="wlform">
+
+	</form>
+
+	<input type="button" id="delete" value="Delete"><br>
+
+	Add: <input type="text" id="addText"><button id="addButton">Add</button>
+	<div id="status"></div>
+</body>
 </html>

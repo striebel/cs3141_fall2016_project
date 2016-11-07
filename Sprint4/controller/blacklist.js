@@ -1,3 +1,7 @@
+/* blacklist.js */
+/* Jake Mager */
+/* Jacob Striebel */
+
 //TODO: 
 //		verify that the URL is valid
 //		check for duplicate URL before adding
@@ -46,7 +50,7 @@ function buildPage()
 {
 	getBlacklist(function(blacklist)	// Enter session to load storage
 	{
-		if (blacklist == undefined)
+		if (blacklist == undefined || blacklist.length == 0)
 		{
 			document.getElementById("blform").innerHTML = "Your blacklist is empty<br>";
 		}

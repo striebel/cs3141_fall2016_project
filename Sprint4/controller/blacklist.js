@@ -59,7 +59,11 @@ function buildPage()
 				blarray.push(buildLine(i, blacklist[i]));
 			}
 
-			if (debug) console.log(blarray);
+			if (debug)
+			{
+				console.log(blarray);
+				console.log(blacklist);
+			}
 
 			var blhtml = "";
 			for (var j = 0; j < blarray.length; j++)

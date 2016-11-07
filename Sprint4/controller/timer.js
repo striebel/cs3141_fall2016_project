@@ -47,9 +47,10 @@ function initializeClock(id, endtime) {
   var timeinterval = setInterval(updateClock, 1000); // Runs updateCLock function every 1000 milliseconds 
 }
 
-var button = document.getElementById('start');
+var startButton = document.getElementById('start');
+var timeEntry = document.getElementById('time');
 
-button.addEventListener('click', function(){
+startButton.addEventListener('click', function(){
   var limit = document.getElementById('time').value;
 
   time = limit.split(":"); // Splits user input into an array
@@ -63,4 +64,25 @@ button.addEventListener('click', function(){
 
   initializeClock('clockdiv', deadline);
 });
+
+timeEntry.addEventListener('keyup', function() {
+    if(event.keyCode === 13){
+    document.getElementById('start').click();
+    console.log("test" + event.keyCode)
+    var limit = document.getElementById('time').value;
+
+  time = limit.split(":"); // Splits user input into an array
+  hour = time[0]; // First element of the array contains the hours
+  minute = time[1]; // Second element contains the minutes
+
+  var timeLimit = (hour * 1000 * 60 * 60)+(minute * 1000 * 60); // Convert hour and minutes into milliseconds
+  var deadline = new Date(); // Create new Date object 
+
+  deadline.setMilliseconds(timeLimit); // Give deadline the value timeLimit
+
+  initializeClock('clockdiv', deadline);
+  }
+  //console.log("Key pressed:" + event.keyCode)
+});
+
 });

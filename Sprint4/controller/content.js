@@ -13,7 +13,12 @@ currentURL = currentURL.substring(0, deleteIndex);
 
 // Check for blackout
 function restore_options() {
-	chrome.storage.local.get(function(items) {
+	chrome.storage.local.get({
+		blackoutEnabled: true,
+		blacklist: "",
+		whitelist: ""
+	}
+	function(items) {
 		block(items.blackoutEnabled, items.blacklist, items.whitelist)
 	});
 }

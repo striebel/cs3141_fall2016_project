@@ -1,17 +1,21 @@
 <!DOCTYPE html>
 <!-- blacklist.html -->
+<html>
 <head>
-	
+<script src="../../model/model.js"></script>
+<script src="../../controller/blacklist.js"></script>
 </head>
 <body>
 	<h2>Blacklist</h2>
-	<div id="blacklist">
-		<ul id='blacklistSites'>
-	</div>
-	Add: <input type='text' id='newBlacklistItem'><button id='newBlacklistItemSubmit'>Add</button>
+
+	<form id="blform">
+		<input type="checkbox" id="site0" value="Checkbox Numero Uno"><label>Checkbox Numero Uno</label><br>
+		<input type="checkbox" id="cb2" value="Checkbox Numero Uno"><label>Checkbox Numero Doses</label><br>
+	</form>
+
+	<input type="button" id="delete" value="Delete"><br>
+
+	Add: <input type="text" id="addText"><button id="addButton">Add</button>
 	<div id="status"></div>
 </body>
-<script src="../../jquery-3.1.1.min.js"></script>
-<!--<script src="../../Model/model.js"></script>-->
-<script src="../../Controller/blacklist.js"></script>
 </html>

@@ -9,22 +9,12 @@ function performBlock()
 	document.write("<html><body><center><h1>STOP PROCRASTINATING</h1></center></body></html>");
 	document.close();
 
-	/*
-	var d = new Date();
-	var n = d.getFullYear();
-	document.getElementsByTagName("html")[0].innerHTML = 
-"<body><center><h1>STOP PROCRASTINATION " + n + "</h1><img src='http://www.mememaker.net/static/images/memes/4467057.jpg' /></center></body>";*/
+	//document.getElementsByTagName("html")[0].innerHTML = 
 }
 
 function testBlock()
 {
-	isBlackout(function(isBlack)
-	{
-		if (isBlack)
-			performBlock();
-	});
-
-	getToggle(function(toggle)
+	getBlockStatus(function(blockStatus)
 	{
 		// Get current URL, then remove everything besides "second-level-dn.top-level-dn"
 		var url = window.location.toString().toLowerCase();
@@ -47,59 +37,46 @@ function testBlock()
 				url = temp;
 		}
 
-		console.log(url);
 
-		if (toggle == "noblock")
-		{
-			return;
-		}
-		else if (toggle == "whitelist")
-		{
-			getWhitelist(function(whitelist)
-			{
-				whitelist = "dummy~" + whitelist;
-				var wl = whitelist.split("~"); // Turn whitelist into an array
-				var i;
-				var onWhitelist
-				for (i = 0; i < wl.length; i++)
-				{
-					console.log("wl.length: " + wl);
-					console.log("wl string: " + whitelist);
-					console.log("Whitelist: " + wl[i]);			
 
-					if (url == wl[i])
-					{
-						console.log(wl[i]);
-						onWhitelist = true;
-						break;
-					}
-				}
-				if (!onWhitelist)
-					performBlock();
-			});
-		}
-		else if (toggle == "blacklist")
-		{
-			getBlacklist(function(blacklist)
-			{
-				blacklist = "dummy~" + blacklist;
-				var bl = blacklist.split("~"); // Turn blacklist into an array
-				var i;
-				for (i = 0; i < bl.length; i++)
-				{
-					console.log("Blacklist: " + bl[i]);
 
-					if (url == bl[i])
-					{
+		switch (blockStatus)
+		{
+			case "noblock":
+				break;
+
+			case "blacklist":
+				getBlacklist(function(blacklist)
+				{console.log(blacklist);
+					for (var i = 0; i < blacklist.length && blacklist[i] != url; i++)
+						;
+					if (i < blacklist.length)
 						performBlock();
-						break;
-					}
-				}
-			});
+				});
+				break;
+
+			case "whitelist":
+				getWhitelist(function(whitelist)
+				{console.log(whitelist);
+					for (var i = 0; i < whitelist.length && whitelist[i] != url; i++)
+						;
+					if (i == whitelist.length)
+						performBlock();
+				});
+				break;
+
+			case "blackout":
+				performBlock();
+				break;
+
+			default:
 		}
 	});
 }
 
+/* hard-coded blacklist and whitelist */
+
+/*
 addToWhitelist("mtu.edu", function()
 {	
 	console.log("mtu.edu added");
@@ -108,7 +85,7 @@ addToWhitelist("mtu.edu", function()
 		console.log("weather.gov added");
 		getWhitelist(function(whitelist)
 		{
-			console.log("main wl: " + whitelist);
+			console.log("whitelist: " + whitelist);
 		});
 	});
 });
@@ -121,11 +98,11 @@ addToBlacklist("wikipedia.org", function()
 		console.log("stackoverflow.com added");
 		getBlacklist(function(blacklist)
 		{
-			console.log("main bl: " + blacklist);
+			console.log("blacklist: " + blacklist);
 		});
 	});
 });
-
+*/
 
 
 testBlock();

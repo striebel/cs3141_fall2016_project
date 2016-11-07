@@ -20,8 +20,10 @@ function getBlockStatus(callback)
 	{
 		if (map["blockstatus"] == undefined)
 		{
-			setNoBlock();
-			callback("noblock");
+			setNoBlock(function()
+			{
+				callback("noblock");
+			});
 		}
 		else
 		{
@@ -30,7 +32,25 @@ function getBlockStatus(callback)
 	});
 }
 
-// Return the blacklist urls to callback in the form of a string "url1~url2~...~urln"
+function getTimerStatus(callback)
+{
+	getMap(function(map)
+	{
+		if (map["timerstatus"] == undefined)
+		{
+			setTimerDisabled(function()
+			{
+				callback("disabled");
+			});
+		}
+		else
+		{
+			callback(map["timerstatus"]);
+		}
+	});
+}
+
+// Return the array of blacklist urls
 function getBlacklist(callback)
 {
 	getMap(function(map)
@@ -39,7 +59,7 @@ function getBlacklist(callback)
 	});
 }
 
-// returns the whitelist urls in the form "url1~url2~...~urln"
+// Return the array of whitelist urls
 function getWhitelist(callback)
 {
 	getMap(function(map)
@@ -97,7 +117,26 @@ function setBlackout(callback)
 	});
 }
 
-// add the string url to the blacklist
+
+function setTimerDisabled(callback)
+{
+	setMap({"timerstatus": "disabled"}, function()
+	{
+		if (typeof callback == "function")
+			callback();
+	});
+}
+
+function setTimerEnabled(callback)
+{
+	setMap({"timerstatus": "enabled"}, function()
+	{
+		if (typeof callback == "function")
+			callback();
+	});
+}
+
+// add the string url to the blacklist array
 function addToBlacklist(url, callback)
 {
 	getMap(function(map)
@@ -105,34 +144,29 @@ function addToBlacklist(url, callback)
 		var urlList = map["blacklist"];
 		if (urlList == undefined)
 		{
-			setMap({"blacklist": url}, function()
+			urlList = [url];
+			setMap({"blacklist": urlList}, function()
 			{
-				if(typeof callback == "function")
+				if (typeof callback == "function")
 					callback();
 			});
 		}
 		else
 		{
-
-			if (urlList.indexOf(url) == -1)
-			{
-				urlList = urlList + "~" + url;
-				setMap({"blacklist": urlList}, function()
-				{
-					if(typeof callback == "function")
-						callback();
-				});
-			}
-			else
+			for (var i = 0; i < urlList.length && urlList[i] != url; i++)
+				;
+			if (i == urlList.length)
+				urlList.push(url);
+			setMap({"blacklist": urlList}, function()
 			{
 				if (typeof callback == "function")
 					callback();
-			}
+			});
 		}
 	});
 }
 
-// add the string url to the whitelist
+// add the string url to the whitelist array
 function addToWhitelist(url, callback)
 {
 	getMap(function(map)
@@ -140,7 +174,8 @@ function addToWhitelist(url, callback)
 		var urlList = map["whitelist"];
 		if (urlList == undefined)
 		{
-			setMap({"whitelist": url}, function()
+			urlList = [url];
+			setMap({"whitelist": urlList}, function()
 			{
 				if (typeof callback == "function")
 					callback();
@@ -148,20 +183,33 @@ function addToWhitelist(url, callback)
 		}
 		else
 		{
-			if (urlList.indexOf(url) == -1)
-			{
-				urlList = urlList + "~" + url;
-				setMap({"whitelist": urlList}, function()
-				{
-					if (typeof callback == "function")
-						callback();
-				});
-			}
-			else
+			for (var i = 0; i < urlList.length && urlList[i] != url; i++)
+				;
+			if (i == urlList.length)
+				urlList.push(url);
+			setMap({"whitelist": urlList}, function()
 			{
 				if (typeof callback == "function")
 					callback();
-			}
-		}		
+			});
+		}
+	});
+}
+
+function saveBlacklist(blacklist, callback)
+{
+	setMap({"blacklist": blacklist}, function()
+	{
+		if (typeof callback == "function")
+			callback();
+	});
+}
+
+function saveWhitelist(whitelist, callback)
+{
+	setMap({"whitelist": whitelist}, function()
+	{
+		if (typeof callback == "function")
+			callback();
 	});
 }

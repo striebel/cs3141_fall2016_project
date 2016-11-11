@@ -10,10 +10,11 @@
 <h1>Recurring Timer</h1>
 
 <div class = "content">
-<script type="text/javascript" src="../../controller/timer.js"></script>
+<script type="text/javascript" src="../../controller/daily_timer.js"></script>
+ <h3>Select days and times for your recurring study timer</h3>
 
-<div id="selectdiv">
-  <h3>Select days and times for your recurring study timer</h3>
+<div id="clockdiv">
+  <div id="daysdiv" align = "left" class="daytext">
   <form action="">
   <input type="checkbox" name="item1" value="item1">Monday<br>
   <input type="checkbox" name="item2" value="item2">Tuesday<br>
@@ -23,10 +24,9 @@
   <input type="checkbox" name="item6" value="item6">Saturday<br>
   <input type="checkbox" name="item7" value="item7">Sunday<br>
 </form>
-
-<div id="clockdiv">
-<input type="text" id="time" placeholder="HH:MM" />
-<button type="button" id="start">START</button>
+</div>
+<input type="text" id="time" placeholder="Start Time - End Time" />
+<button type="button" id="start">SAVE</button>
   <div>
     <span class="days"></span>
     <div class="smalltext">Days</div>

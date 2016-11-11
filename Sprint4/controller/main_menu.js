@@ -11,6 +11,7 @@ function paintMainMenu()
 		var blacklist = document.getElementById("black-list");
 		var whitelist = document.getElementById("white-list");
 		var blackout  = document.getElementById("black-out");
+		var addWeb = document.getElementById("addWebsite");
 
 		var blocktype = document.getElementById("describe-block-type");
 

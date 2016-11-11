@@ -42,7 +42,8 @@ document.addEventListener("DOMContentLoaded", function()
 });
 
 function buildLine(id, website) {
-	return "<input type=\"checkbox\" id=\""+id+"\"><label>"+website+"</label><br>"
+	return "<label>"+website+"</label><input type=\"checkbox\" id=\""+id+"\"><br />"
+	//return "<input type=\"checkbox\" id=\""+id+"\"><label>"+website+"</label><br>"
 }
 
 // Load blacklist

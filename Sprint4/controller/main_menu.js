@@ -16,20 +16,10 @@ function paintMainMenu()
 
 		var toggleblock = document.getElementById("toggle-block-type");
 
-		var timeron  = document.getElementById("timer-on");
-		var timeroff = document.getElementById("timer-off");
-
-		var timerstatus = document.getElementById("describe-timer-status");
-
-		var toggletimer = document.getElementById("toggle-timer-status");
-
 		noblock.textContent = "no-block";
 		blacklist.textContent = "blacklist";
 		whitelist.textContent = "whitelist";
 		blackout.textContent = "black-out";
-
-		timeron.textContent = "timer-enabled";
-		timeroff.textContent = "timer-disabled";
 
 		if (blockStatus == "noblock")
 		{
@@ -56,8 +46,34 @@ function paintMainMenu()
 			blackout.textContent = blackout.textContent.toUpperCase();
 			whitelist.textContent = whitelist.textContent.toLowerCase();		
 		}
-		else { console.log("getBlockStatus(): failed"); }
+		else { console.log("getBlockStatus(): returned the unexpected result: " + blockStatus); }
+	});
 
+	getTimerStatus(function(timerStatus)
+	{
+		var timerenabled  = document.getElementById("timer-on");
+		var timerdisabled = document.getElementById("timer-off");
+
+		var timerstatus = document.getElementById("describe-timer-status");
+
+		var toggletimer = document.getElementById("toggle-timer-status");
+
+		timerenabled.textContent = "timer-enabled";
+		timerdisabled.textContent = "timer-disabled";
+
+		if (timerStatus == "enabled")
+		{
+			timerstatus.textContent = "timer-enabled: once the timer has elapsed, block type will switch to no-block";
+			timerenabled.textContent = timerenabled.textContent.toUpperCase();
+			timerdisabled.textContent = timerdisabled.textContent.toLowerCase();
+		}
+		else if (timerStatus == "disabled")
+		{
+			timerstatus.textContent = "timer-disabled: the current block type will remain set indefinitely";
+			timerdisabled.textContent = timerdisabled.textContent.toUpperCase();
+			timerenabled.textContent = timerenabled.textContent.toLowerCase();
+		}
+		else { console.log("getTimerStatus(): returned the unexpected result: " + timerStatus); }
 	});
 }
 
@@ -83,6 +99,26 @@ document.addEventListener("DOMContentLoaded", function()
 				case "blackout":
 					setNoBlock(function() { paintMainMenu(); });
 					break;
+			}
+		});
+	});
+
+	document.getElementById("toggle-timer-status").addEventListener("click", function()
+	{
+		console.log("HERE1");
+		getTimerStatus(function(timerStatus)
+		{
+			console.log("HERE2");
+			switch (timerStatus)
+			{
+				case "enabled":
+					setTimerDisabled(function() { paintMainMenu(); });
+					break;
+				case "disabled":
+					setTimerEnabled(function() { paintMainMenu(); });
+					break;
+				default:
+					console.log("getTimerStatus(): returned the unexpected result: " + timerStatus);
 			}
 		});
 	});

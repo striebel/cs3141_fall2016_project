@@ -2,14 +2,28 @@
 <!-- daily_timer.html -->
 <html>
 <head>
+	<link rel="stylesheet" href="../../shared/bottomfooter.css">
 	<link rel="stylesheet" href="../../view/shared/bottomfooter.css">
 	<link rel="stylesheet" href="../../view/timer/timer.css">
 </head>
 
-<h1>Daily Timer</h1>
+<h1>Recurring Timer</h1>
 
 <div class = "content">
 <script type="text/javascript" src="../../controller/timer.js"></script>
+
+<div id="selectdiv">
+  <h3>Select days and times for your recurring study timer</h3>
+  <form action="">
+  <input type="checkbox" name="item1" value="item1">Monday<br>
+  <input type="checkbox" name="item2" value="item2">Tuesday<br>
+  <input type="checkbox" name="item3" value="item3">Wednesday<br>
+  <input type="checkbox" name="item4" value="item4">Thursday<br>
+  <input type="checkbox" name="item5" value="item5">Friday<br>
+  <input type="checkbox" name="item6" value="item6">Saturday<br>
+  <input type="checkbox" name="item7" value="item7">Sunday<br>
+</form>
+
 <div id="clockdiv">
 <input type="text" id="time" placeholder="HH:MM" />
 <button type="button" id="start">START</button>

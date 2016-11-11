@@ -63,6 +63,13 @@ startButton.addEventListener('click', function(){
   deadline.setMilliseconds(timeLimit); // Give deadline the value timeLimit
 
   initializeClock('clockdiv', deadline);
+
+  if(deadline <= timeLimit){
+    startButton.removeAttribute('disabled');
+  }
+  else{
+    startButton.disabled = true;
+  }
 });
 
 timeEntry.addEventListener('keyup', function() {
@@ -82,7 +89,9 @@ timeEntry.addEventListener('keyup', function() {
 
   initializeClock('clockdiv', deadline);
   }
+
   //console.log("Key pressed:" + event.keyCode)
 });
+
 
 });

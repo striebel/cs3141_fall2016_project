@@ -196,6 +196,22 @@ function addToWhitelist(url, callback)
 	});
 }
 
+// delete from blackList
+function deleteFromBlacklist(url, callback)
+{
+	getMap(function(map)
+	{
+		var urlList = map["blacklist"];
+		
+		urlList.pop(url);
+		setMap({"blacklist": urlList}, function()
+			{
+			if (typeof callback == "function")
+				callback();
+			});
+	});
+}
+
 function saveBlacklist(blacklist, callback)
 {
 	setMap({"blacklist": blacklist}, function()

@@ -40,6 +40,12 @@ function initializeClock(id, endtime) {
     // Clears counter once time has run out
     if (t.total <= 0) {
       clearInterval(timeinterval); // Once time is 0 this clears the interval so the counter stops running
+      startButton.disabled = false;
+      timeEntry.disabled = false;
+    }
+    else if(t.total > 0){
+      startButton.disabled = true;
+      timeEntry.disabled = true;
     }
   }
 
@@ -64,12 +70,6 @@ startButton.addEventListener('click', function(){
 
   initializeClock('clockdiv', deadline);
 
-  if(deadline <= timeLimit){
-    startButton.removeAttribute('disabled');
-  }
-  else{
-    startButton.disabled = true;
-  }
 });
 
 timeEntry.addEventListener('keyup', function() {

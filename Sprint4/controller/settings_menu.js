@@ -35,7 +35,7 @@ document.addEventListener("DOMContentLoaded", function() {
 	// Created button that, when clicked, opens a new tab in chrome
 	var button = document.getElementById('dailyTimerBtn'); 
 	button.addEventListener('click', function() {
-		window.open("../timer/daily_timer.html");
+		window.open("../daily_timer/daily_timer.html");
 	});
 });
 

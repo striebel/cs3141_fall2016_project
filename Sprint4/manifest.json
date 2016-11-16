@@ -7,7 +7,7 @@
   
     "browser_action":
     {
-        "default_icon": "./view/assets/icon.png",
+        "default_icon": "./view/assets/icon64.png",
         "default_popup": "./view/main_menu/main_menu.html"
     },
   
@@ -37,8 +37,8 @@
   
     "icons":
     {
-        "128": "./view/assets/icon.png",
-        "16": "./view/assets/icon.png",
-        "48": "./view/assets/icon.png"
+        "128": "./view/assets/icon128.png",
+        "16": "./view/assets/icon16.png",
+        "48": "./view/assets/icon48.png"
     }
 }

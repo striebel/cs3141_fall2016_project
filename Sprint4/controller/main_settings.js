@@ -4,3 +4,9 @@ $(window).on('hashchange', function() {
 	var iframe = document.getElementById('iframe');
 	iframe.src = "../" + redirect + "/" + redirect + ".html"
 });
+
+$( function() {
+	$( "#tabs" ).tabs({
+		event: "mouseover"
+	});
+} );

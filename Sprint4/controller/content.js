@@ -3,7 +3,7 @@
 //                 Jacob Striebel
 // last modified : 2016 Nov 3
 
-testBlock();
+checkBlock();
 
 function performBlock()
 {
@@ -12,7 +12,7 @@ function performBlock()
 }
 
 // Determine if this site ought to be blocked, and if it ought, block it.
-function testBlock()
+function checkBlock()
 {
 	getBlockStatus(function(blockStatus)
 	{

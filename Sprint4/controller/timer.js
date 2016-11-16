@@ -1,9 +1,114 @@
 // file          : timer.js
-// author        :
-// last modified :
+// author        : Jacob Striebel
+//               : Jacob Woloschek
+// last modified : 2016 Nov 15
 
-document.addEventListener("DOMContentLoaded", function(){
+var intervalID = setInterval(secondElapsed, 1000);
 
+var hoursSpan, minutesSpan, secondsSpan;
+
+function exit()
+{
+	clearInterval(intervalID);
+	alert("Timer elapsed");
+	window.close();
+}
+
+function setTime(hours, minutes, seconds)
+{
+	hoursSpan.innerHTML   = ("0" + hours).slice(-2);
+	minutesSpan.innerHTML = ("0" + minutes).slice(-2);
+	secondsSpan.innerHTML = ("0" + seconds).slice(-2);
+}
+
+function getTime()
+{
+	var hours = hoursSpan.innerHTML;
+	var minutes = minutesSpan.innerHTML;
+	var seconds = secondsSpan.innerHTML;
+	return { "hours": hours, "minutes": minutes, "seconds": seconds };
+}
+
+function timerInit()
+{
+	getTimerStatus(function(timerStatus)
+	{
+		if (timerStatus == "disabled")
+		{
+			exit();
+		}
+		else
+		{
+			getTimerTime(function(timerTime)
+			{
+				var secondsRemaining = timerTime[1] - Math.round(new Date().getTime() / 1000);
+
+				if (secondsRemaining <= 0)
+				{
+					exit();
+				}
+				else
+				{
+					var hours = Math.floor(secondsRemaining / 3600);
+					secondsRemaining -= hours * 3600;
+					var minutes = Math.floor(secondsRemaining / 60);
+					var seconds = secondsRemaining - (minutes * 60);
+
+					var clock = document.getElementById("clockdiv");
+					hoursSpan = clock.querySelector('.hours');
+					minutesSpan = clock.querySelector('.minutes');
+					secondsSpan = clock.querySelector('.seconds');
+
+					setTime(hours, minutes, seconds);
+				}
+			});
+		}
+	});
+}
+
+function secondElapsed()
+{
+	getTimerStatus(function(timerStatus)
+	{	
+		if (timerStatus == "disabled") { exit(); }
+	});
+
+	var t = getTime();
+	if (t.seconds == 0)
+	{
+		if (t.minutes == 0)
+		{
+			if (t.hours == 0)
+			{
+				exit();
+			}
+			else
+			{
+				t.hours -= 1;
+				t.minutes = 59;
+				t.seconds = 59;
+			}
+		}
+		else
+		{
+			t.minutes -= 1;
+			t.seconds = 59;
+		}
+	}
+	else
+	{
+		t.seconds -= 1;
+	}
+
+	setTime(t.hours, t.minutes, t.seconds);
+} 
+
+document.addEventListener("DOMContentLoaded", function()
+{
+	timerInit();
+});
+
+/*
   // This function calculates the time remaining on the clock
   function getTimeRemaining(endtime) {
   var t = Date.parse(endtime) - Date.parse(new Date()); // Finds the difference between the current time and the endtime
@@ -93,5 +198,5 @@ timeEntry.addEventListener('keyup', function() {
   //console.log("Key pressed:" + event.keyCode)
 });
 
-
 });
+*/

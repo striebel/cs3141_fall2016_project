@@ -94,11 +94,11 @@ function getWhitelist(callback)
 	});
 }
 
-function getStartTime(callback)
+function getTimerTime(callback)
 {
 	getMap(function(map)
 	{
-		callback(map["starttime"]);
+		callback(map["timertime"]);
 	});
 }
 
@@ -170,9 +170,9 @@ function setTimerEnabled(callback)
 	});
 }
 
-function setStartTime(starttime, callback)
+function saveTimerTime(time, callback)
 {
-	setMap({"starttime": starttime}, function()
+	setMap({"timertime": time}, function()
 	{
 		if (typeof callback == "function")
 			callback();

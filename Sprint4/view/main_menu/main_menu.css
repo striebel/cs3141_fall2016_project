@@ -1,0 +1,117 @@
+html
+{
+	width: 450px;
+	height: 600px;
+	background-color: white;
+	text-align: center;
+
+	background-color: rgb(204, 255, 204);
+}
+
+body
+{
+	width: 430px;
+    height: 580px;
+
+	padding: 0px;
+
+	border: 2px;
+	border-radius: 5px;
+	border-style: solid;
+	border-color: black;
+	padding: 0px;
+
+	margin: 8px;
+}
+
+hr
+{
+	border-color: black;
+}
+
+#div-title
+{
+	text-align: center;
+}
+
+#extension-logo
+{
+
+	display: inline-block;
+	vertical-align: middle;
+	width: 30px;
+}
+
+#extension-name
+{
+	display: inline-block;
+	vertical-align: middle;
+}
+
+div.a
+{
+	display: inline-block;
+	float: left;
+	text-align: center;
+
+	width: 205px;
+	height: 180px;   /* 160px */
+
+	padding: 5px;
+
+	border: 0px;
+
+	margin: 0px;
+}
+
+button.btn
+{
+	width: 195px;
+	height: 30px;
+
+	padding: 0px;
+
+	border: 0px;
+	border-radius: 5px;
+	
+	margin-right: 5px;
+	margin-left: 5px;
+	margin-top: 5px;
+	margin-bottom: 5px;
+
+	font-weight: bold;
+}
+
+label
+{
+	font-weight: bold;
+}
+
+#no-block-btn  { background-color: green;  }
+#blacklist-btn { background-color: yellow; }
+#whitelist-btn { background-color: orange; }
+#blackout-btn  { background-color: red;    }
+
+a
+{
+	color: black;
+	text-decoration: none;
+}
+
+a:hover {
+	color: red;	
+}
+
+#todoContainer {
+	border: solid 1px;
+	margin-top: 15px;
+}
+
+#footer {
+	margin-top: 10px;
+}
+
+.footer {
+	color: grey;
+	text-decoration: none;
+}

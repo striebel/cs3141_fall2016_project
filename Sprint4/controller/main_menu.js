@@ -1,126 +1,287 @@
 // file          : main_menu.js
-// author        : Jake Mager
-//                 Jacob Striebel
-// last modified : 2016 Nov 3
+// author        : Jacob Striebel 
+//               : Jake Mager
+// last modified : 2016 Nov 15
+
+var no_block;
+var blacklist;
+var whitelist;
+var blackout;
+
+var no_block_msg  = "No-Block: No site is blocked.";
+var blacklist_msg = "Blacklist: Exactly sites on your blacklist are blocked.";
+var whitelist_msg = "Whitelist: Exactly sites on your whitelist are not blocked.";
+var blackout_msg  = "Blackout: All sites are blocked.";
+
+var timer_enabled_msg  = "Timer Enabled: The current block type will persist until either the timer has expired or the timer is cancelled.";
+var timer_disabled_msg = "Timer Disabled: The current block type will persist indefinitely.";
+
+var timer_on_HTML  = "" +
+				"<button id = \"view-timer-btn\" class = \"btn\">View Timer</button><br>" +
+                "<button id = \"cancel-timer-btn\" class = \"btn\">Cancel Timer</button><br>" +
+                "<label id = \"block-type-label\"></label><br>" + 
+                "<label id = \"timer-status-label\"></label>";
+var timer_off_HTML = "<button id = \"set-timer-btn\" class = \"btn\">Set Timer</button> <br> <label id = \"block-type-label\"></label><br><label id = \"timer-status-label\"></label>";
+
+/*
+ * Change ">>> btn-txt <<<" to "btn-txt" for the currently marked button.
+ * The the currently marked button is the button that maps to the blocking
+ * type that was enabled immediately preceeding the blocking type that was
+ * just selected.
+ * Blocking types are:
+ * --> No-Block
+ * --> Blacklist
+ * --> Whitelist
+ * --> Blackout
+ */
+function clear()
+{
+	var btns = [];
+	btns.push(no_block);
+	btns.push(blacklist);
+	btns.push(whitelist);
+	btns.push(blackout);
+	
+	for (var i = 0; i < 4; i++)
+	{
+		var cur = btns[i].innerHTML;
+
+		if (cur.substring(0, 4) == "&gt;") /* "&gt;" is the html escape for '>' */
+		{
+			btns[i].innerHTML = cur.substring(13, cur.length - 13);
+		}
+	}
+}
+
+/* 
+ * Refer to the clear() function's description
+ */
+function mark(btn)
+{
+	btn.innerHTML = ">>> " + btn.innerHTML + " <<<"
+}
 
 function paintMainMenu() 
 {
 	getBlockStatus(function(blockStatus)
 	{
-		var noblock   = document.getElementById("no-block");
-		var blacklist = document.getElementById("black-list");
-		var whitelist = document.getElementById("white-list");
-		var blackout  = document.getElementById("black-out");
-		var addWeb = document.getElementById("addWebsite");
+		var blocktype = document.getElementById("block-type-label");
 
-		var blocktype = document.getElementById("describe-block-type");
-
-		var toggleblock = document.getElementById("toggle-block-type");
-
-		noblock.textContent = "no-block";
-		blacklist.textContent = "blacklist";
-		whitelist.textContent = "whitelist";
-		blackout.textContent = "black-out";
-
-		if (blockStatus == "noblock")
+		getTimerStatus(function(timerStatus)
 		{
-			blocktype.textContent = "no-block: no sites are currently being blocked";
-			noblock.textContent = noblock.textContent.toUpperCase();
-			blackout.textContent = blackout.textContent.toLowerCase();
+			var timerEnabled = false;
+			if (timerStatus == "enabled")
+				timerEnabled = true;
+
+			if (blockStatus == "noblock")
+			{
+				clear();
+				mark(no_block);
+				blocktype.innerHTML = no_block_msg;
+			}
+			else if (blockStatus == "blacklist")
+			{
+				clear();
+				mark(blacklist);
+				blocktype.textContent = blacklist_msg;
+			}
+			else if (blockStatus == "whitelist")
+			{
+				clear();
+				mark(whitelist);
+				blocktype.textContent = whitelist_msg;
+			}	
+			else if (blockStatus == "blackout")
+			{
+				clear();
+				mark(blackout);
+				blocktype.textContent = blackout_msg;
+			}
+			else
+			{
+				console.log("getBlockStatus(): returned the unexpected result: " + blockStatus);
+			}
+
+
+
+			var timerStatusLabel = document.getElementById("timer-status-label");
+
+			if (timerStatus == "enabled")
+			{
+				timerStatusLabel.textContent = timer_enabled_msg;
+			}
+			else if (timerStatus == "disabled")
+			{
+				timerStatusLabel.textContent = timer_disabled_msg;
+			}
+			else
+			{
+				console.log("getTimerStatus(): returned the unexpected result: " + timerStatus);
+			}
+
+		});
+	});
+}
+
+function paintTimerOff()
+{
+	document.getElementById("div-1-right").innerHTML = timer_off_HTML;
+	document.getElementById("set-timer-btn").addEventListener("click", function()
+	{
+		var time = prompt("Set the timer duration (HH:MM:SS)", "HH:MM:SS");
+		if (time != null)
+		{
+			var hours   = parseInt(time.substr(0,2));
+			var minutes = parseInt(time.substr(3,2));
+			var seconds = parseInt(time.substr(6,2));
+	
+			if (isNaN(hours) || isNaN(minutes) || isNaN(seconds) ||
+                hours > 99 || minutes > 59 || seconds > 59)
+			{
+				alert("<" + time + "> is not a valid time specification");
+			}
+			else
+			{
+				alert("You've specified a timer duration of\nhours: <" + hours + ">\nminutes: <" + minutes + ">\nseconds: <" + seconds + ">");
+
+				var startSeconds = Math.round(new Date().getTime() / 1000);			
+				var endSeconds = startSeconds + (hours * 3600) + (minutes * 60) + seconds;
+
+				setTimerEnabled(function()
+				{
+					saveTimerTime([startSeconds, endSeconds], function()
+					{	
+						paintMainMenu();
+						runBackgroundTimer();
+						window.open("../timer/timer.html");
+					});
+				});
+			}
 		}
-		else if (blockStatus == "blacklist")
+	});
+}
+
+function paintTimerOn()
+{
+	document.getElementById("div-1-right").innerHTML = timer_on_HTML;
+
+	document.getElementById("cancel-timer-btn").addEventListener("click", function()
+	{
+		if (confirm("Confirm: cancel timer and switch to No-Block"))
+			setTimerDisabled(function()
+			{
+				setNoBlock(function()
+				{
+					paintTimerOff();
+					paintMainMenu();
+				});
+			});
+	});
+
+	document.getElementById("view-timer-btn").addEventListener("click", function()
+	{
+		window.open("../timer/timer.html");
+	});
+}
+
+/*
+ *   Entry point of execution
+ *
+ */
+document.addEventListener("DOMContentLoaded", function()
+{
+	no_block  = document.getElementById("no-block-btn");
+	blacklist = document.getElementById("blacklist-btn");
+	whitelist = document.getElementById("whitelist-btn");
+	blackout  = document.getElementById("blackout-btn");
+
+	no_block.addEventListener("click", function()
+	{
+		getTimerStatus(function(timerStatus)
 		{
-			blocktype.textContent = "blacklist: you can visit any site that is not on your blacklist";
-			blacklist.textContent = blacklist.textContent.toUpperCase();
-			noblock.textContent = noblock.textContent.toLowerCase();
-			
-		}
-		else if (blockStatus == "whitelist")
+			if (timerStatus == "disabled")
+			{
+				setNoBlock(function() { paintMainMenu(); });
+			}
+			else
+			{
+				getBlockStatus(function(blockStatus)
+				{
+					alert("\"" + blockStatus + "\" will persist until either the timer has elapsed " +
+                          "or the timer is cancelled.");
+				});
+			}
+		});
+	});
+
+	blacklist.addEventListener("click", function()
+	{
+		getTimerStatus(function(timerStatus)
 		{
-			blocktype.textContent = "whitelist: you can only visit sites on your whitelist";
-			whitelist.textContent = whitelist.textContent.toUpperCase();
-			blacklist.textContent = blacklist.textContent.toLowerCase();
-		}	
-		else if (blockStatus == "blackout")
+			if (timerStatus == "disabled")
+			{
+				setBlacklist(function() { paintMainMenu(); });
+			}
+			else
+			{
+				getBlockStatus(function(blockStatus)
+				{
+					alert("\"" + blockStatus + "\" will persist until either the timer has elapsed " +
+                          "or the timer is cancelled.");
+				});
+			}
+		});
+	});
+
+	whitelist.addEventListener("click", function()
+	{
+		getTimerStatus(function(timerStatus)
 		{
-			blocktype.textContent = "black-out: all sites are blocked";
-			blackout.textContent = blackout.textContent.toUpperCase();
-			whitelist.textContent = whitelist.textContent.toLowerCase();		
-		}
-		else { console.log("getBlockStatus(): returned the unexpected result: " + blockStatus); }
+			if (timerStatus == "disabled")
+			{
+				setWhitelist(function() { paintMainMenu(); });
+			}
+			else
+			{
+				getBlockStatus(function(blockStatus)
+				{
+					alert("\"" + blockStatus + "\" will persist until either the timer has elapsed " +
+                          "or the timer is cancelled.");
+				});
+			}
+		});
+	});
+
+	blackout.addEventListener("click", function()
+	{
+		getTimerStatus(function(timerStatus)
+		{
+			if (timerStatus == "disabled")
+			{
+				setBlackout(function() { paintMainMenu(); });
+			}
+			else
+			{
+				getBlockStatus(function(blockStatus)
+				{
+					alert("\"" + blockStatus + "\" will persist until either the timer has elapsed " +
+                          "or the timer is cancelled.");
+				});
+			}
+		});
 	});
 
 	getTimerStatus(function(timerStatus)
 	{
-		var timerenabled  = document.getElementById("timer-on");
-		var timerdisabled = document.getElementById("timer-off");
-
-		var timerstatus = document.getElementById("describe-timer-status");
-
-		var toggletimer = document.getElementById("toggle-timer-status");
-
-		timerenabled.textContent = "timer-enabled";
-		timerdisabled.textContent = "timer-disabled";
-
-		if (timerStatus == "enabled")
+		if (timerStatus == "disabled")
 		{
-			timerstatus.textContent = "timer-enabled: once the timer has elapsed, block type will switch to no-block";
-			timerenabled.textContent = timerenabled.textContent.toUpperCase();
-			timerdisabled.textContent = timerdisabled.textContent.toLowerCase();
+			paintTimerOff();
 		}
-		else if (timerStatus == "disabled")
+		else
 		{
-			timerstatus.textContent = "timer-disabled: the current block type will remain set indefinitely";
-			timerdisabled.textContent = timerdisabled.textContent.toUpperCase();
-			timerenabled.textContent = timerenabled.textContent.toLowerCase();
+			paintTimerOn();
 		}
-		else { console.log("getTimerStatus(): returned the unexpected result: " + timerStatus); }
 	});
-}
 
-document.addEventListener("DOMContentLoaded", function()
-{
 	paintMainMenu();
-	
-	document.getElementById("toggle-block-type").addEventListener("click", function()
-	{
-		getBlockStatus(function(blockStatus)
-		{
-			switch (blockStatus)
-			{
-				case "noblock":
-					setBlacklist(function() { paintMainMenu(); });
-					break;
-				case "blacklist":
-					setWhitelist(function() { paintMainMenu(); });
-					break;
-				case "whitelist":
-					setBlackout(function() { paintMainMenu(); });
-					break;
-				case "blackout":
-					setNoBlock(function() { paintMainMenu(); });
-					break;
-			}
-		});
-	});
-
-	document.getElementById("toggle-timer-status").addEventListener("click", function()
-	{
-		console.log("HERE1");
-		getTimerStatus(function(timerStatus)
-		{
-			console.log("HERE2");
-			switch (timerStatus)
-			{
-				case "enabled":
-					setTimerDisabled(function() { paintMainMenu(); });
-					break;
-				case "disabled":
-					setTimerEnabled(function() { paintMainMenu(); });
-					break;
-				default:
-					console.log("getTimerStatus(): returned the unexpected result: " + timerStatus);
-			}
-		});
-	});
 });

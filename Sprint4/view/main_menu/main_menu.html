@@ -5,35 +5,41 @@
         <script src="../../jquery-3.1.1.min.js"></script>
 		<script src="../../model/model.js"></script>
         <script src="../../controller/main_menu.js"></script>
-        <link rel="stylesheet" text="text/css" href="popup.css">
+		<script src="../../controller/background.js"></script>
+        <link rel="stylesheet" text="text/css" href="main_menu.css">
     </head>
 
     <body>
         <div style="display: inline-block;">
             <img style="display: inline-block; vertical-align:middle;" width="64px" src="../assets/icon128.png"> 
             <h2 style="display: inline-block; margin-left:5px;">StopProcrastination</h2>
+        <div id = "div-title">
+            <img id = "extension-logo" src="../assets/icon.png" alt=""> 
+            <h2 id = "extension-name">Stop Procrastination</h2>
         </div>
         <hr>
-
-			<div id="no-block"></div> |
-			<div id="black-list"></div> |
-			<div id="white-list"></div> |
-			<div id="black-out"></div>
-			<br>
-			<div id="describe-block-type"></div>
-			<br>
-			<input type="button" id="toggle-block-type" value="Cycle Block Type" />
-			
+		<div id = "div-1">
+			<div id = "div-1-left" class = "a">
+				<button id = "no-block-btn" class = "btn">No-Block</button><br>
+				<button id = "blacklist-btn" class = "btn">Blacklist</button><br>
+				<button id = "whitelist-btn" class = "btn">Whitelist</button><br>
+				<button id = "blackout-btn" class = "btn">Blackout</button>
+			</div>
+			<div id = "div-1-right" class = "a">
+<!--
+				<button id = "view-timer-btn" class = "btn">View Timer</button>
+				<br>
+				<button id = "cancel-timer-btn" class = "btn">Cancel Timer</button>
+				<br>
+				<label id = "block-type-label"></label>
+				<br>
+				<label id = "timer-status-label"></label>
+/-->
+			</div>
+		</div>	
 		<hr>
 
-			<div id="timer-on"></div> |
-			<div id="timer-off"></div>
-			<br>
-			<div id="describe-timer-status"></div>
-			<br>
-			<input type="button" id="toggle-timer-status" value="Cycle Timer Status" />
 
-		<hr>
 
         <a style="display: block; padding-bottom: 2px;" href="#" id="blockCurrentWebsite">Block Current Website</a>
         Add Website: <input type="text" id="addWebsite" />  <button id="addWebsiteBtn">Add</button>

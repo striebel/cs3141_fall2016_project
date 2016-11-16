@@ -1,9 +1,10 @@
 {
     "manifest_version": 2,
 
-    "name": "StopProcrastination",
-    "description": "This extension helps you to focus while working online.",
-    "version": "1.0",
+    "name": "Stop Procrastination",
+    "version": "0.9",
+
+    "description": "Don't succumb to distraction",
   
     "browser_action":
     {
@@ -11,6 +12,8 @@
         "default_popup": "./view/main_menu/main_menu.html"
     },
   
+	"background": { "scripts": ["./controller/background.js"] },
+
     "content_scripts":
     [{
         "matches":

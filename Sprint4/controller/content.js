@@ -3,20 +3,20 @@
 //                 Jacob Striebel
 // last modified : 2016 Nov 3
 
-// blockWebsite: Change inner HTML of HTML tags to tell the user they can not go to this site
+testBlock();
+
 function performBlock()
 {
-	document.write("<html><body><center><h1>STOP PROCRASTINATING</h1></center></body></html>");
+	document.write("<html>STOP PROCRASTINATING</html>");
 	document.close();
-
-	//document.getElementsByTagName("html")[0].innerHTML = 
 }
 
+// Determine if this site ought to be blocked, and if it ought, block it.
 function testBlock()
 {
 	getBlockStatus(function(blockStatus)
 	{
-		// Get current URL, then remove everything besides "second-level-dn.top-level-dn"
+		// Get current URL, then remove everything besides "...second-level-dn.top-level-dn"
 		var url = window.location.toString().toLowerCase();
 		url = url.replace("http://", "");
 		url = url.replace("https://", "");	
@@ -24,7 +24,8 @@ function testBlock()
 		if (delIndex != -1)
 			url = url.substring(0, delIndex);
 
-		// Remove any third level, and below, domains from the URL	
+		// Remove any third level, and below, domains from the URL so that it is of the form
+		// "second-level-dn.top-level-dn
 		var temp;	
 		var i = 0;
 		while (true)
@@ -37,9 +38,6 @@ function testBlock()
 				url = temp;
 		}
 
-
-
-
 		switch (blockStatus)
 		{
 			case "noblock":
@@ -47,7 +45,7 @@ function testBlock()
 
 			case "blacklist":
 				getBlacklist(function(blacklist)
-				{console.log(blacklist);
+				{
 					for (var i = 0; i < blacklist.length && blacklist[i] != url; i++)
 						;
 					if (i < blacklist.length)
@@ -57,7 +55,7 @@ function testBlock()
 
 			case "whitelist":
 				getWhitelist(function(whitelist)
-				{console.log(whitelist);
+				{
 					for (var i = 0; i < whitelist.length && whitelist[i] != url; i++)
 						;
 					if (i == whitelist.length)
@@ -73,36 +71,3 @@ function testBlock()
 		}
 	});
 }
-
-/* hard-coded blacklist and whitelist */
-
-/*
-addToWhitelist("mtu.edu", function()
-{	
-	console.log("mtu.edu added");
-	addToWhitelist("weather.gov", function()
-	{
-		console.log("weather.gov added");
-		getWhitelist(function(whitelist)
-		{
-			console.log("whitelist: " + whitelist);
-		});
-	});
-});
-
-addToBlacklist("wikipedia.org", function()
-{
-	console.log("wikipedia.org added");
-	addToBlacklist("stackoverflow.com", function()
-	{
-		console.log("stackoverflow.com added");
-		getBlacklist(function(blacklist)
-		{
-			console.log("blacklist: " + blacklist);
-		});
-	});
-});
-*/
-
-
-testBlock();

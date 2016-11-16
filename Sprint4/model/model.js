@@ -1,7 +1,7 @@
 // file          : model.js
 // author        : Jacob Striebel
-//               :
-// last modified : 2016 Nov 6
+//               : Jake Mager
+// last modified : 2016 Nov 15
 
 //  Return the map of key-value pairs to the callback function
 function getMap(callback)
@@ -50,21 +50,55 @@ function getTimerStatus(callback)
 	});
 }
 
-// Return the array of blacklist urls
+// Return the array of blacklist urls or a new empty array if blacklist has not
+// been instantiated
 function getBlacklist(callback)
 {
 	getMap(function(map)
 	{
-		callback(map["blacklist"]);
+		var bl = map["blacklist"]
+		if (bl == undefined)
+		{
+			bl = [];
+			setMap({"blacklist": bl}, function()
+			{
+				callback(bl);
+			});
+		}
+		else
+		{
+			callback(bl);
+		}
 	});
 }
 
-// Return the array of whitelist urls
+// Return the array of whitelist urls or a new empty array if whitlist has not
+// yet been instantiated
 function getWhitelist(callback)
 {
 	getMap(function(map)
 	{
-		callback(map["whitelist"]);
+		var wl = map["whitelist"]
+		if (wl == undefined)
+		{
+			wl = [];
+			setMap({"whitelist": wl}, function()
+			{
+				callback(wl);
+			});
+		}
+		else
+		{
+			callback(wl);
+		}
+	});
+}
+
+function getStartTime(callback)
+{
+	getMap(function(map)
+	{
+		callback(map["starttime"]);
 	});
 }
 
@@ -136,6 +170,15 @@ function setTimerEnabled(callback)
 	});
 }
 
+function setStartTime(starttime, callback)
+{
+	setMap({"starttime": starttime}, function()
+	{
+		if (typeof callback == "function")
+			callback();
+	});
+}
+ 
 // add the string url to the blacklist array
 function addToBlacklist(url, callback)
 {
@@ -196,19 +239,31 @@ function addToWhitelist(url, callback)
 	});
 }
 
-// delete from blackList
+// delete the provided url from blacklist
 function deleteFromBlacklist(url, callback)
 {
-	getMap(function(map)
-	{
-		var urlList = map["blacklist"];
-		
+	getBlacklist(function(urlList)
+	{	
 		urlList.pop(url);
-		setMap({"blacklist": urlList}, function()
-			{
+		saveBlacklist(urlList, function()
+		{
 			if (typeof callback == "function")
 				callback();
-			});
+		});
+	});
+}
+
+// delete the provided url from whitelist
+function deleteFromWhitelist(url, callback)
+{
+	getWhitelist(function(urlList)
+	{	
+		urlList.pop(url);
+		saveWhitelist(urlList, function()
+		{
+			if (typeof callback == "function")
+				callback();
+		});
 	});
 }
 

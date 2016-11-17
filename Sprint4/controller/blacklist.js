@@ -26,61 +26,49 @@ document.addEventListener("DOMContentLoaded", function()
 				buildPage();
 			});
 		});
+		
+	document.getElementById("removeButton").addEventListener("click", function() {
+			getBlacklist(function(blacklist) {
+				var blform = document.getElementById("blform");
+				var amtDeleted = 0;
+				for (var i = 0; i < blform.length; i++) {
+					var option = blform.children[i];
+					if (option.value == blacklist[i - amtDeleted] && option.selected) {
+						blacklist.splice(i - amtDeleted, 1); 
+						saveBlacklist(blacklist);
+						amtDeleted++;
+					}
+				}
+				buildPage();
+		});
+	});
 });
 
-function buildLine(id, website) {
-	return "<label>"+website+"</label> <img name='deleteBtn' src='http://www.drodd.com/images15/red-x22.png' id='" + id + "' width=15px /></li><br />"
-}
+//function buildLine(id, website) {
+//	return "<label>"+website+"</label> <img name='deleteBtn' src='http://www.drodd.com/images15/red-x22.png' id='" + id + "' width=15px /></li><br />"
+//}
 
-function createDeleteBtnListener() {
-	for (var i = 0; i < document.getElementsByName("deleteBtn").length; i++) {
-		document.getElementById(i).addEventListener('click', function() {
-			getBlacklist(function(blacklist)
-			{
-				i = i - 1;
-				blacklist.splice(i, 1);
-				console.log(i);
-				saveBlacklist(blacklist, function()
-				{
-					buildPage();
-				});	
-			});
-		});
-	}
-}
+
 
 // Load blacklist
 function buildPage()
 {
 	getBlacklist(function(blacklist)	// Enter session to load storage
 	{
-		if (blacklist == undefined || blacklist.length == 0)
-		{
-			document.getElementById("blform").innerHTML = "Your blacklist is empty<br>";
+		var blform = document.getElementById("blform");
+		blform.innerHTML = "";
+		if (blacklist == undefined || blacklist.length == 0) {
+			//currently do nothing
 		}
-		else
-		{
-			var blarray = [];
-			
-			for (var i = 0; i < blacklist.length; i++)
-			{
-				blarray.push(buildLine(i, blacklist[i]));
+		else {			
+			for (var i = 0; i < blacklist.length; i++) {
+				var option = document.createElement("option");
+				option.text = blacklist[i];
+				option.value = blacklist[i]; 
+				
+				blform.appendChild(option);	
 			}
 			
-			if (debug)
-			{
-				console.log(blarray);
-				console.log(blacklist);
-			}
-
-			var blhtml = "";
-			for (var j = 0; j < blarray.length; j++)
-			{
-				blhtml += blarray[j];
-			}
-
-			document.getElementById("blform").innerHTML = blhtml;
-			createDeleteBtnListener();
-		}
+		}	
 	});
 }

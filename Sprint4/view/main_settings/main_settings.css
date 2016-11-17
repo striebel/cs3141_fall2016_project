@@ -13,8 +13,9 @@ h2{
 	}
 	
 .ui-widget-header {
-		border: none !important;
-		background: #AA4F39 !important;
+		border: none;
+		border-bottom: 1px solid black;	
+		background: #AA4F39;
 		border-radius: 0px;
 	}
 	

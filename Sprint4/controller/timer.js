@@ -3,14 +3,19 @@
 //               : Jacob Woloschek
 // last modified : 2016 Nov 15
 
-var intervalID = setInterval(secondElapsed, 1000);
+var intervalID;
 
 var hoursSpan, minutesSpan, secondsSpan;
+
+document.addEventListener("DOMContentLoaded", function()
+{
+	intervalID = setInterval(secondElapsed, 1000);
+	timerInit();
+});
 
 function exit()
 {
 	clearInterval(intervalID);
-	alert("Timer elapsed");
 	window.close();
 }
 
@@ -102,11 +107,6 @@ function secondElapsed()
 
 	setTime(t.hours, t.minutes, t.seconds);
 } 
-
-document.addEventListener("DOMContentLoaded", function()
-{
-	timerInit();
-});
 
 /*
   // This function calculates the time remaining on the clock

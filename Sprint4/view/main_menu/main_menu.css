@@ -1,17 +1,17 @@
 html
 {
 	width: 450px;
-	height: 600px;
+	height: 350px;
 	background-color: white;
 	text-align: center;
 
-	background-color: rgb(204, 255, 204);
+	background-color: rgb(219, 95, 95);
 }
 
 body
 {
 	width: 430px;
-    height: 580px;
+    height: 330px;
 
 	padding: 0px;
 
@@ -99,7 +99,7 @@ a
 }
 
 a:hover {
-	color: red;	
+	color: lightgray;	
 }
 
 #todoContainer {
@@ -112,6 +112,7 @@ a:hover {
 }
 
 .footer {
-	color: grey;
+	color: black; 
 	text-decoration: none;
+	font-size: 20px;
 }

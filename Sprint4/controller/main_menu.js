@@ -126,6 +126,7 @@ function paintMainMenu()
 function paintTimerOff()
 {
 	document.getElementById("div-1-right").innerHTML = timer_off_HTML;
+
 	document.getElementById("set-timer-btn").addEventListener("click", function()
 	{
 		var time = prompt("Set the timer duration (HH:MM:SS)", "HH:MM:SS");
@@ -135,8 +136,7 @@ function paintTimerOff()
 			var minutes = parseInt(time.substr(3,2));
 			var seconds = parseInt(time.substr(6,2));
 	
-			if (isNaN(hours) || isNaN(minutes) || isNaN(seconds) ||
-                hours > 99 || minutes > 59 || seconds > 59)
+			if (isNaN(hours) || isNaN(minutes) || isNaN(seconds) || hours > 99 || minutes > 59 || seconds > 59)
 			{
 				alert("<" + time + "> is not a valid time specification");
 			}
@@ -152,7 +152,6 @@ function paintTimerOff()
 					saveTimerTime([startSeconds, endSeconds], function()
 					{	
 						paintMainMenu();
-						runBackgroundTimer();
 						window.open("../timer/timer.html");
 					});
 				});
@@ -277,9 +276,13 @@ document.addEventListener("DOMContentLoaded", function()
 		{
 			paintTimerOff();
 		}
-		else
+		else if (timerStatus == "enabled")
 		{
 			paintTimerOn();
+		}
+		else
+		{
+			console.log("getTimerStatus() in main_menu.js failed");
 		}
 	});
 

@@ -2,42 +2,59 @@
 // author        : Jacob Striebel
 // last modified : 2016 Nov 15
 
-var intervalID;
+var intervalID = setInterval(timerEvent, 1000);
 
-function runBackgroundTimer()
+console.log("0");
+
+function timerEvent() 
 {
-	alert("Background Here!");
 
-	intervalID = setInterval(checkForTimerElapsed, 1000);
-}
+	console.log("1");	
 
-function cancelBackgroundTimer()
-{
-	cancelInterval(intervalID);
-}
-
-function checkForTimerElapsed()
-{   
     getTimerStatus(function(timerStatus)
     {
+
+		console.log("2");
+
         if (timerStatus == "enabled")
         {
+
+			console.log("3");
+
             getTimerTime(function(timerTime)
             {
-                var secondsRemaining = timerTime[1] - Math.round(new Date().getTime / 1000);
-                if (secondsRemaining <= 0)
+
+				console.log("4");
+
+				var currentSeconds = Math.round(new Date().getTime() / 1000);
+				var stopSeconds = timerTime[1];                                /* timerTime == [ startSecondsSinceTheEpoch, endSecondsSinceTheEpoch ] */
+                var remainingSeconds = stopSeconds - currentSeconds
+
+				console.log("currentSeconds: " + currentSeconds);
+				console.log("stopSeconds: " + stopSeconds);
+				console.log("remainingSeconds: " + remainingSeconds);
+
+                if (remainingSeconds <= 1) /* actually should be <= 0, but 1 is used as insurance to account for inherent inaccuracy of this method */
                 {
+
+					console.log("5");
+
                     setTimerDisabled(function()
                     {
+
+						console.log("6");
+
                         setNoBlock(function()
-                        {
-							cancelInterval(intervalID);
-                            alert("The timer has expired: block type switched to No-Block");
-                        });
+						{
+
+							console.log("7");
+
+							clearInterval(intervalID);
+
+						});
                     });
                 }
             });
         }
     });
 }
-

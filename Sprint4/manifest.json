@@ -4,7 +4,7 @@
     "name": "Stop Procrastination",
     "version": "0.9",
 
-    "description": "Don't succumb to distraction",
+    "description": "Don't succumb to online distraction",
   
     "browser_action":
     {
@@ -12,7 +12,7 @@
         "default_popup": "./view/main_menu/main_menu.html"
     },
   
-	"background": { "scripts": ["./controller/background.js"] },
+	"background": { "page": "./controller/background.html" },
 
     "content_scripts":
     [{

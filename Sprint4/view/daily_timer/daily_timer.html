@@ -1,52 +1,40 @@
-<!DOCTYPE html>
-<!-- daily_timer.html -->
-<html>
-<head>
-	<link rel="stylesheet" href="../../shared/bottomfooter.css">
-	<link rel="stylesheet" href="../../view/shared/bottomfooter.css">
-	<link rel="stylesheet" href="../../view/shared/timer.css">
-</head>
-
 <h1>Recurring Timer</h1>
 
 <div class = "content">
-<script type="text/javascript" src="../../controller/daily_timer.js"></script>
  <h3>Select days and times for your recurring study timer</h3>
 
-<div id="clockdiv">
-  <div id="daysdiv" align = "left" class="daytext">
-  <form action="">
-  <input type="checkbox" name="item1" value="item1">Monday<br>
-  <input type="checkbox" name="item2" value="item2">Tuesday<br>
-  <input type="checkbox" name="item3" value="item3">Wednesday<br>
-  <input type="checkbox" name="item4" value="item4">Thursday<br>
-  <input type="checkbox" name="item5" value="item5">Friday<br>
-  <input type="checkbox" name="item6" value="item6">Saturday<br>
-  <input type="checkbox" name="item7" value="item7">Sunday<br>
-</form>
+<div id="pickingForm">
+   <div style=" display: inline; width:100px;">
+     <b style="vertical-align: top; display:inline-block; margin-top:0px;">Day:</b>
+      <div id="days" style="vertical-align: top; display:inline-block;">
+       <div style="vertical-align: top; display:inline-block;">
+         <input type="checkbox" name="day" value="monday">Monday<br>
+         <input type="checkbox" name="day" value="tuesday">Tuesday<br>
+         <input type="checkbox" name="day" value="wednesday">Wednesday<br />
+         <input type="checkbox" name="day" value="thursday">Thursday<br /><br />
+         <input type="submit" value="Submit" />
+       </div>
+       <div style="vertical-align: top; display:inline-block">
+         <input type="checkbox" name="day" value="friday">Friday<br>
+         <input type="checkbox" name="day" value="saturday">Saturday<br>
+         <input type="checkbox" name="day" value="sunday">Sunday<br>
+       </div>
+     </div>
+     <div style="margin-left:25px; display:inline-block">
+     <b>Time:</b> <input type="text" min=1 max=12 size=2 id='timeHour' placeholder="HR" />:
+                  <input max=60 min=0 type="text" size=2 id='timeMinute' placeholder="MIN"/>
+     <select id='timeSelection'>
+       <option value='am'>AM</option>
+       <option value='pm'>PM</option>
+     </select>
+     <div  style="padding-top:1px;">
+     <br /><b>Block type:</b><br />
+     <input type="radio" name="blockType" value="blacklist"> Black List<br />
+     <input type="radio" name="blockType" value="whitelist"> White List<br />
+    </div>
+    </div>
+   </div>
+  </div>
 </div>
-<input type="text" id="time" placeholder="Start Time - End Time" />
-<button type="button" id="start">SAVE</button>
-  <div>
-    <span class="days"></span>
-    <div class="smalltext">Days</div>
-  </div>
-  <div>
-    <span class="hours"></span>
-    <div class="smalltext">Hours</div>
-  </div>
-  <div>
-    <span class="minutes"></span>
-    <div class="smalltext">Minutes</div>
-  </div>
-  <div>
-    <span class="seconds"></span>
-    <div class="smalltext">Seconds</div>
-  </div>
-</div>
-</div>
+<script type="text/javascript" src="../../controller/daily_timer.js"></script>
 
-<footer align = "center">
-	<p>Stop Procrastination is Developed by ACJ3 at Michigan Technological University</p>
-</footer>
-</html>

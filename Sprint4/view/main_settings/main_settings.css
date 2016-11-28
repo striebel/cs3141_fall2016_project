@@ -8,22 +8,85 @@
 		text-decoration: none !important;
 	}
 	
+h2{
+	aligin: right;
+	}
+	
+.ui-widget-header {
+		border: none;
+		border-bottom: 1px solid black;	
+		background: #AA4F39;
+		border-radius: 0px;
+	}
+	
+.ui-tabs .ui-tabs-nav .ui-tabs-anchor {
+	}
+
+.ui-state-active,
+	.ui-widget-content .ui-state-active,
+	.ui-widget-header .ui-state-active,
+	a.ui-button:active,
+	.ui-button:active,
+	.ui-button.ui-state-active:hover {
+		background-color: #D47E6A;
+		border: none;
+		text-shadow: 2px 2px 2px #333333;
+		border-top: 1px solid black;
+		border-right: 1px solid black;
+		border-left: 1px solid black;
+		}
+	
+#tabs {
+	background-color: #D47E6A;
+	margin:0px;
+	width:100%;
+	float:left;
+	padding:0px;
+	border: none;
+	position: relative;
+	z-index: 10;
+	
+	}
+	
+#tabs:after {
+background-color: #D47E6A;
+		content: '';
+		display: block;	
+		position: absolute;
+		top: 35px;
+		left: 10px;
+		right: 10px;
+		bottom: 10px;
+		z-index: -1;
+	}
+		
 #body {
-	background-color: white;
+	background-color: #551000;
 	margin-top: 0px;
+	
 	}
 
 #middleBody {
-	background-color: #999999;
-	width: 75%;
-	height: 800px;
+	background-color: #AA4F39;
+	width: 75%; 
 	border-radius: 15px;
+	padding-top:10px;
+	margin-bottom:0px;
+	height:250px;
 	}
 	
-#head {
-	color: white;
-	align: center;
+.header {
+		margin-left: 15px;
+		margin-bottom: 15px;
+		display: inline-block;
+		float: left;
+		vertical-align: middle;
+		height: 128px;
+		color: white;
+
 	}
+
+
 	
 #iframe {
 	width: 100%;
@@ -31,22 +94,5 @@
 	border: none;
 	align: center;
 	}
-	
-.col-md-2 {
-	text-align: center;
-	border: solid 2px black;
-	}
-	
-.col-md-2:hover {
-	background: #CCCCCC;
-	}
-	
-.jumbotron {
-		background: #CCCCCC !important;
-		padding-bottom: 0px !important;
-		margin-top: 10px !important;
-		margin-bottom: 1px !important;
-		border-radius: 15px 15px 0 0;
-		}
-		
+
 		

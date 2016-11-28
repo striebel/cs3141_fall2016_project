@@ -3,32 +3,44 @@
 	<head>
 		<meta charset="UTF-8">
 		<title>Stop Procrastion</title>
+		<link rel="stylesheet" type="text/css" href="../../jquery-ui.css">
 		<link rel="stylesheet" type="text/css" href="main_settings.css">
 		<link href="../../bootstrap-3.3.7-dist/css/bootstrap.min.css" rel="stylesheet">
 	</head>
 	<body id='body'>
-		<center>
+	<center>
+
 		<div id='middleBody'>
-			<div class="jumbotron">
-				<div class="container">
-					<h1 class="display-3">Stop Procrastion</h1>
-					<p class="lead">Together, we will defeat procrastion</p>
-				</div>
+		<img class='header' src="../assets/icon128.png"> 
+		<div  class='header'>
+			<h2 style='vertical-aligin:middle; padding-top:15px; margin-bottom:0px;'>Stop Procrastination</h2>
+			<p style='padding:0px; margin:-5px'>Together, we can stop procrastion.</p>
+		</div>
+		<br /><br />
+		<div id="tabs">
+			<ul>
+				<li><a href="#tabs-blacklist">Blacklist</a></li>
+				<li><a href="#tabs-whitelist">Whitelist</a></li>
+				<li><a href="#tabs-daily_timer">Daily Timer</a></li>
+				<li><a href="#tabs-help">Help</a></li>
+			</ul>
+			<div id="tabs-blacklist">
+				<iframe src="../blacklist/blacklist.html" id="iframe"></iframe>
 			</div>
-			<div id='main' class="col-md-8 col-md-offset-2">
-				<div id='head' class='row'>
-					<div class="col-md-2"><a class='navLink' href='#blacklist'>Blacklist</a></div>
-					<div class="col-md-2"><a class='navLink' href='#whitelist'>Whitelist</a></div>
-<!--					<div class="col-md-2"><a class='navLink' href='#timer'>Timer</a></div>  /-->
-					<div class="col-md-2"><a class='navLink' href='#daily_timer'>Daily Timer</a></div>
-					<div class="col-md-2"><a class='navLink' href='#todo'>To-Do List</a></div>
-					<div class="col-md-2"><a class='navLink' href='#help'>Help</a></div>
-				</div>
-				<iframe src="" id="iframe"></iframe>
+			<div id="tabs-whitelist">
+				<iframe src="../whitelist/whitelist.html" id="iframe"></iframe>
+			</div>
+			<div id="tabs-daily_timer">
+				<iframe src="../daily_timer/daily_timer.html" id="iframe"></iframe>
+			</div>
+			<div id="tabs-help">
+				<iframe src="../help/help.html" id="iframe"></iframe>
 			</div>
 		</div>
-		</center>
+				</center>
+				</div>
 	</body>
 	<script src="../../jquery-3.1.1.min.js"></script>
+	<script src="../../jquery-ui.js"></script>
 	<script src="../../controller/main_settings.js"></script>
 </html>

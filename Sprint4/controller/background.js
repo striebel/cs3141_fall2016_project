@@ -34,7 +34,7 @@ function timerEvent()
 				console.log("stopSeconds: " + stopSeconds);
 				console.log("remainingSeconds: " + remainingSeconds);
 
-                if (remainingSeconds <= 0)
+                if (remainingSeconds <= 1) /* actually should be <= 0, but 1 is used as insurance to account for inherent inaccuracy of this method */
                 {
 
 					console.log("5");

@@ -7,8 +7,7 @@ checkBlock();
 
 function performBlock()
 {
-	document.write("<html>STOP PROCRASTINATING</html>");
-	document.close();
+	location.assign("http://striebelj.com/stop-procrastination.html");
 }
 
 // Determine if this site ought to be blocked, and if it ought, block it.
@@ -36,6 +35,11 @@ function checkBlock()
 				break;
 			else
 				url = temp;
+		}
+
+		if (url == "striebelj.com") /* if this url has already been blocked */
+		{
+			return;
 		}
 
 		switch (blockStatus)

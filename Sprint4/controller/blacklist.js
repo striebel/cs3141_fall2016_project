@@ -18,15 +18,17 @@ document.addEventListener("DOMContentLoaded", function()
 	// Intially load the blacklist
 	buildPage();
 
-
 	document.getElementById("addButton").addEventListener("click", function()
 		{
 			addToBlacklist(document.getElementById("addText").value, function()
 			{
 				buildPage();
 			});
+			document.getElementById("addText").value = "";
+			document.getElementById("addText").focus();
 		});
-		
+	
+	
 	document.getElementById("removeButton").addEventListener("click", function() {
 			getBlacklist(function(blacklist) {
 				var blform = document.getElementById("blform");
@@ -42,13 +44,15 @@ document.addEventListener("DOMContentLoaded", function()
 				buildPage();
 		});
 	});
+	
+	//When entered is pushed and focus on addText is present
+	$("#addText").keyup(function(event){
+		if(event.keyCode == 13){
+			$("#addButton").click();
+		}
+	});
+	
 });
-
-//function buildLine(id, website) {
-//	return "<label>"+website+"</label> <img name='deleteBtn' src='http://www.drodd.com/images15/red-x22.png' id='" + id + "' width=15px /></li><br />"
-//}
-
-
 
 // Load blacklist
 function buildPage()
@@ -71,4 +75,5 @@ function buildPage()
 			
 		}	
 	});
+	document.getElementById("addText").focus();
 }

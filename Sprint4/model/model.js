@@ -94,6 +94,23 @@ function getWhitelist(callback)
 	});
 }
 
+function getDailyTimer(callback) {
+	getMap(function(map) {
+		var dailyTimer = map["dailyTimer"];
+		if (dailyTimer == undefined) {
+			dailyTimer = [];
+			setMap({"dailyTimer": dailyTimer}, function () {
+				callback(dailyTimer)
+			})	
+		}
+		else {
+			callback(dailyTimer);
+		}
+	});
+	
+}
+
+
 function getTimerTime(callback)
 {
 	getMap(function(map)
@@ -179,6 +196,38 @@ function saveTimerTime(time, callback)
 	});
 }
  
+
+// add to dailyTimer array
+function addToDailyTimer(day, startTime, endTime, blockType, callback)
+{
+	getMap(function(map)
+	{
+			var dailyTimer = map["dailyTimer"];
+			if (dailyTimer == undefined) {
+				var newTime = [];
+				newTime.push({"day": day, "startTime": startTime, "endTime": endTime, "blockType": blockType});
+				setMap({"dailyTimer": newTime}, function()
+				{
+					if (typeof callback == "function")
+						callback();
+				});
+
+			}
+			else {
+//				for (var i = 0; i < dailyTimer.length && dailyTimer[i] != url; i++)
+//					;
+//				if (i == dailyTimer.length)
+					dailyTimer.push({"day": day, "startTime": startTime, "endTime": endTime, "blockType": blockType});
+				setMap({"dailyTimer": dailyTimer}, function()
+				{
+					if (typeof callback == "function")
+						callback();
+				});
+			}
+			
+	});
+}
+
 // add the string url to the blacklist array
 function addToBlacklist(url, callback)
 {

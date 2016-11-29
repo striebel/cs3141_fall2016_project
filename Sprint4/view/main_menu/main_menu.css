@@ -2,26 +2,17 @@ html
 {
 	width: 450px;
 	height: 350px;
-	background-color: white;
-	text-align: center;
-
-	background-color: rgb(219, 95, 95);
+	background-color: #551000;
 }
 
 body
 {
+	margin-left:10px;
+	margin-top:10px;
 	width: 430px;
     height: 330px;
-
-	padding: 0px;
-
-	border: 2px;
+	background-color: #AA4F39;
 	border-radius: 5px;
-	border-style: solid;
-	border-color: black;
-	padding: 0px;
-
-	margin: 8px;
 }
 
 hr
@@ -87,10 +78,26 @@ label
 	font-weight: bold;
 }
 
-#no-block-btn  { background-color: green;  }
-#blacklist-btn { background-color: yellow; }
-#whitelist-btn { background-color: orange; }
-#blackout-btn  { background-color: red;    }
+#no-block-btn  { 
+	background-color: #FEFDFB;
+	box-shadow:      1px 1px 1px 1px black;  
+   }
+#blacklist-btn { 
+	background-color: #FEFDFB;
+	box-shadow:      1px 1px 1px 1px black;  
+   }
+#whitelist-btn { 
+	background-color: #FEFDFB;
+	box-shadow:      1px 1px 1px 1px black;  
+   }
+#blackout-btn  { 
+	background-color: #FEFDFB;
+	box-shadow:      1px 1px 1px 1px black;  
+   }
+#set-timer-btn { 
+	background-color: #FEFDFB;
+	box-shadow:      1px 1px 1px 1px black;  
+   }
 
 a
 {
@@ -99,7 +106,7 @@ a
 }
 
 a:hover {
-	color: lightgray;	
+	color: white;	
 }
 
 #todoContainer {
@@ -108,6 +115,7 @@ a:hover {
 }
 
 #footer {
+	margin-left: 40%;
 	margin-top: 10px;
 }
 

@@ -97,7 +97,7 @@ function getWhitelist(callback)
 function getDailyTimer(callback) {
 	getMap(function(map) {
 		var dailyTimer = map["dailyTimer"];
-		if (dailyTimer == undefined) {
+		if (dailyTimer == undefined || dailyTimer.length == undefined) {
 			dailyTimer = [];
 			setMap({"dailyTimer": dailyTimer}, function () {
 				callback(dailyTimer)
@@ -214,10 +214,7 @@ function addToDailyTimer(day, startTime, endTime, blockType, callback)
 
 			}
 			else {
-//				for (var i = 0; i < dailyTimer.length && dailyTimer[i] != url; i++)
-//					;
-//				if (i == dailyTimer.length)
-					dailyTimer.push({"day": day, "startTime": startTime, "endTime": endTime, "blockType": blockType});
+				dailyTimer.push({"day": day, "startTime": startTime, "endTime": endTime, "blockType": blockType});
 				setMap({"dailyTimer": dailyTimer}, function()
 				{
 					if (typeof callback == "function")
@@ -333,3 +330,13 @@ function saveWhitelist(whitelist, callback)
 			callback();
 	});
 }
+
+function saveDailyTimer(dailyTimer, callback)
+{
+	setMap({"dailyTimer": dailyTimer}, function()
+	{
+		if (typeof callback == "function")
+			callback();
+	});
+}
+

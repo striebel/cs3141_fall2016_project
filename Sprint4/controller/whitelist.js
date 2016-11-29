@@ -1,73 +1,79 @@
-/* whitelist.html */
+/* whiteList.js */
 /* Jake Mager */
 /* Jacob Striebel */
 
-var debug = true;
+
+// Do not make IDs = to a number
+
+//TODO: 
+//		verify that the URL is valid
+//		check for duplicate URL before adding
+//		include instructions in HTML
+//		make pretty
+
+var debug = false;
 
 document.addEventListener("DOMContentLoaded", function()
 {
+	// Intially load the whiteList
 	buildPage();
 
-	document.getElementById("delete").addEventListener("click", function()
-	{
-		getWhitelist(function(whitelist)
+	document.getElementById("addButton").addEventListener("click", function()
 		{
-			for (var i = whitelist.length - 1; i >= 0; i--)
-				if (document.getElementById("" + i).checked == true)
-				{
-					whitelist.splice(i, 1);
-				}
-
-			saveWhitelist(whitelist, function()
+			addToWhitelist(document.getElementById("addText").value, function()
 			{
 				buildPage();
-			});	
+			});
+			document.getElementById("addText").value = "";
+			document.getElementById("addText").focus();
+		});
+	
+	
+	document.getElementById("removeButton").addEventListener("click", function() {
+			getWhitelist(function(whiteList) {
+				var wlform = document.getElementById("wlform");
+				var amtDeleted = 0;
+				for (var i = 0; i < wlform.length; i++) {
+					var option = wlform.children[i];
+					if (option.value == whiteList[i - amtDeleted] && option.selected) {
+						whiteList.splice(i - amtDeleted, 1); 
+						saveWhitelist(whiteList);
+						amtDeleted++;
+					}
+				}
+				buildPage();
 		});
 	});
-
-	document.getElementById("addButton").addEventListener("click", function()
-	{
-		addToWhitelist(document.getElementById("addText").value, function()
-		{
-			buildPage();
-		});
+	
+	//When entered is pushed and focus on addText is present
+	$("#addText").keyup(function(event){
+		if(event.keyCode == 13){
+			$("#addButton").click();
+		}
 	});
+	
 });
 
-function buildLine(id, website) {
-	return "<input type=\"checkbox\" id=\""+id+"\"><label>"+website+"</label><br>"
-}
-
+// Load whiteList
 function buildPage()
 {
-	getWhitelist(function(whitelist)
+	getWhitelist(function(whiteList)	// Enter session to load storage
 	{
-		if (whitelist == undefined || whitelist.length == 0)
-		{
-			document.getElementById("wlform").innerHTML = "Your whitelist is empty<br>";
+		var wlform = document.getElementById("wlform");
+		wlform.innerHTML = "";
+		if (whiteList == undefined || whiteList.length == 0) {
+			//currently do nothing
 		}
-		else
-		{
-			var wlarray = [];
+		else {			
+			for (var i = 0; i < whiteList.length; i++) {
+				var option = document.createElement("option");
+				option.text = whiteList[i];
+				option.value = whiteList[i]; 
+				
+				wlform.appendChild(option);	
+			}
 			
-			for (var i = 0; i < whitelist.length; i++)
-			{
-				wlarray.push(buildLine(i, whitelist[i]));
-			}
-
-			if (debug)
-			{
-				console.log(wlarray);
-				console.log(whitelist);
-			}
-
-			var wlhtml = "";
-			for (var j = 0; j < wlarray.length; j++)
-			{
-				wlhtml += wlarray[j];
-			}
-
-			document.getElementById("wlform").innerHTML = wlhtml;
-		}
+		}	
 	});
+	document.getElementById("addText").focus();
 }

@@ -21,7 +21,10 @@ var timer_on_HTML  = "" +
                 "<button id = \"cancel-timer-btn\" class = \"btn\">Cancel Timer</button><br>" +
                 "<label id = \"block-type-label\"></label><br>" + 
                 "<label id = \"timer-status-label\"></label>";
-var timer_off_HTML = "<button id = \"set-timer-btn\" class = \"btn\">Set Timer</button> <br> <label id = \"block-type-label\"></label><br><label id = \"timer-status-label\"></label>";
+var timer_off_HTML = "<button id = 'set-timer-btn' class = 'btn'>Set Timer</button> <br> <label id = 'block-type-label'></label><br><label id = 'timer-status-label'></label>";
+
+var set_time = "<div class='time'><div class='stackTime'>HR <br /><input class='timeInput' placeholder='0' type='text' id='setTimeHour' />:</div><div class='stackTime'>MIN<br /> <input class='timeInput' placeholder='15' type='text' id='setTimeMin' /></div></div><input type='submit' id='setTime' value='Set' />"
+
 
 /*
  * Change ">>> btn-txt <<<" to "btn-txt" for the currently marked button.
@@ -129,57 +132,66 @@ function paintTimerOff()
 
 	document.getElementById("set-timer-btn").addEventListener("click", function()
 	{
-		var time = prompt("Set the timer duration (HH:MM:SS)", "HH:MM:SS");
-		if (time != null)
-		{
-			var hours   = parseInt(time.substr(0,2));
-			var minutes = parseInt(time.substr(3,2));
-			var seconds = parseInt(time.substr(6,2));
-	
-			if (isNaN(hours) || isNaN(minutes) || isNaN(seconds) || hours > 99 || minutes > 59 || seconds > 59)
-			{
-				alert("<" + time + "> is not a valid time specification");
-			}
-			else
-			{
-				alert("You've specified a timer duration of\nhours: <" + hours + ">\nminutes: <" + minutes + ">\nseconds: <" + seconds + ">");
+		var rightDiv = document.getElementById("div-1-right");
 
+		rightDiv.innerHTML = set_time;
+		
+		document.getElementById("setTime").addEventListener("click", function() {
+			var hour = parseInt(document.getElementById("setTimeHour").value);
+			var minute = parseInt(document.getElementById("setTimeMin").value);
+			
+			//TODO: make function so this is not written so poorly
+			if (isNaN(hour) && isNaN(minute) ) {
+				hour = 0;
+				minute = 15;
 				var startSeconds = Math.round(new Date().getTime() / 1000);			
-				var endSeconds = startSeconds + (hours * 3600) + (minutes * 60) + seconds;
+				var endSeconds = startSeconds + (hour * 3600) + (minute * 60);
 
 				setTimerEnabled(function()
 				{
 					saveTimerTime([startSeconds, endSeconds], function()
 					{	
 						paintMainMenu();
-						window.open("../timer/timer.html");
+						paintTimerOn();
 					});
 				});
 			}
-		}
+			else if (isNaN(hour) || isNaN(minute) || hour > 99 || minute > 59) {
+					rightDiv.innerHTML = "Invalid Time";
+			}
+			else {
+				var startSeconds = Math.round(new Date().getTime() / 1000);			
+				var endSeconds = startSeconds + (hour * 3600) + (minute * 60);
+
+				setTimerEnabled(function()
+				{
+					saveTimerTime([startSeconds, endSeconds], function()
+					{	
+						paintMainMenu();
+						paintTimerOn();
+					});
+				});
+			}
+		});
 	});
 }
 
 function paintTimerOn()
 {
-	document.getElementById("div-1-right").innerHTML = timer_on_HTML;
+	document.getElementById("div-1-right").innerHTML = "<iframe style='padding-top:0px; margin-top:-5px; height:70px; border: none;' src='../timer/timer.html' id='iframe'></iframe><br />"+
+	"<button id = 'cancel-timer-btn' class = 'btn'>Cancel Timer</button><br />" +
+	"<label id= 'block-type-label'></label><br />"+
+	"<label id= 'timer-status-label'></label>";
+
 
 	document.getElementById("cancel-timer-btn").addEventListener("click", function()
 	{
-		if (confirm("Confirm: cancel timer and switch to No-Block"))
-			setTimerDisabled(function()
-			{
-				setNoBlock(function()
-				{
-					paintTimerOff();
-					paintMainMenu();
-				});
+		setTimerDisabled(function() {
+			setNoBlock(function() {
+				paintTimerOff();
+				paintMainMenu();
 			});
-	});
-
-	document.getElementById("view-timer-btn").addEventListener("click", function()
-	{
-		window.open("../timer/timer.html");
+		});
 	});
 }
 
@@ -206,8 +218,7 @@ document.addEventListener("DOMContentLoaded", function()
 			{
 				getBlockStatus(function(blockStatus)
 				{
-					alert("\"" + blockStatus + "\" will persist until either the timer has elapsed " +
-                          "or the timer is cancelled.");
+					document.getElementById("block-type-label").innerHtml = blockStatus +  "will persist until either the timer has elapsed or the timer is cancelled";
 				});
 			}
 		});
@@ -225,8 +236,7 @@ document.addEventListener("DOMContentLoaded", function()
 			{
 				getBlockStatus(function(blockStatus)
 				{
-					alert("\"" + blockStatus + "\" will persist until either the timer has elapsed " +
-                          "or the timer is cancelled.");
+					document.getElementById("block-type-label").innerHtml = blockStatus +  "will persist until either the timer has elapsed or the timer is cancelled";
 				});
 			}
 		});
@@ -244,8 +254,7 @@ document.addEventListener("DOMContentLoaded", function()
 			{
 				getBlockStatus(function(blockStatus)
 				{
-					alert("\"" + blockStatus + "\" will persist until either the timer has elapsed " +
-                          "or the timer is cancelled.");
+					document.getElementById("block-type-label").innerHtml = blockStatus +  "will persist until either the timer has elapsed or the timer is cancelled";
 				});
 			}
 		});
@@ -263,8 +272,7 @@ document.addEventListener("DOMContentLoaded", function()
 			{
 				getBlockStatus(function(blockStatus)
 				{
-					alert("\"" + blockStatus + "\" will persist until either the timer has elapsed " +
-                          "or the timer is cancelled.");
+					document.getElementById("block-type-label").innerHtml = blockStatus +  "will persist until either the timer has elapsed or the timer is cancelled";
 				});
 			}
 		});

@@ -17,7 +17,7 @@ body
 
 hr
 {
-	border-color: black;
+	border-color: #551000;
 }
 
 #div-title
@@ -46,7 +46,7 @@ div.a
 	text-align: center;
 
 	width: 205px;
-	height: 180px;   /* 160px */
+	height: 195px;   /* 160px */
 
 	padding: 5px;
 
@@ -98,6 +98,10 @@ label
 	background-color: #FEFDFB;
 	box-shadow:      1px 1px 1px 1px black;  
    }
+#cancel-timer-btn { 
+	background-color: #FEFDFB;
+	box-shadow:      1px 1px 1px 1px black;  
+   }
 
 a
 {
@@ -123,4 +127,27 @@ a:hover {
 	color: black; 
 	text-decoration: none;
 	font-size: 20px;
+}
+
+.stackTime {
+	display: inline-block;
+}
+
+.timeInput {
+	width:30px;
+	height: 25px;
+	margin: 5px;
+	border-radius: 3px;
+	font-size: 15px;
+	text-align: center;
+}
+
+.time {
+	display: inline-block;
+	font-size: 15px;
+	color: white;
+}
+
+#timer-status-label {
+	color: white;
 }

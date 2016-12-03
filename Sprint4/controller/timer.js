@@ -50,7 +50,7 @@ function timerInit()
 
 				if (secondsRemaining <= 0)
 				{
-					exit();
+					//exit();
 				}
 				else
 				{

@@ -50,6 +50,24 @@ function getTimerStatus(callback)
 	});
 }
 
+function getDailyTimerStatus(callback)
+{
+	getMap(function(map)
+	{
+		if (map["dailytimerstatus"] == undefined)
+		{
+			setDailyTimerDisabled(function()
+			{
+				callback("disabled");
+			});
+		}
+		else
+		{
+			callback(map["dailytimerstatus"]);
+		}
+	});
+}
+
 // Return the array of blacklist urls or a new empty array if blacklist has not
 // been instantiated
 function getBlacklist(callback)
@@ -94,14 +112,17 @@ function getWhitelist(callback)
 	});
 }
 
-function getDailyTimer(callback) {
-	getMap(function(map) {
+function getDailyTimer(callback)
+{
+	getMap(function(map)
+	{
 		var dailyTimer = map["dailyTimer"];
 		if (dailyTimer == undefined || dailyTimer.length == undefined) {
 			dailyTimer = [];
-			setMap({"dailyTimer": dailyTimer}, function () {
+			setMap({"dailyTimer": dailyTimer}, function ()
+			{
 				callback(dailyTimer)
-			})	
+			});	
 		}
 		else {
 			callback(dailyTimer);
@@ -109,7 +130,6 @@ function getDailyTimer(callback) {
 	});
 	
 }
-
 
 function getTimerTime(callback)
 {
@@ -178,6 +198,15 @@ function setTimerDisabled(callback)
 	});
 }
 
+function setDailyTimerDisabled(callback)
+{
+	setMap({"dailytimerstatus": "disabled"}, function()
+	{
+		if (typeof callback == "function")
+			callback();
+	});
+}
+
 function setTimerEnabled(callback)
 {
 	setMap({"timerstatus": "enabled"}, function()
@@ -187,6 +216,16 @@ function setTimerEnabled(callback)
 	});
 }
 
+function setDailyTimerEnabled(callback)
+{
+	setMap({"dailytimerstatus": "enabled"}, function()
+	{
+		if (typeof callback == "function")
+			callback();
+	});
+}
+
+/* time = [startSecondsSinceTheEpoch, endSecondsSinceTheEpoch ] */
 function saveTimerTime(time, callback)
 {
 	setMap({"timertime": time}, function()
@@ -195,33 +234,74 @@ function saveTimerTime(time, callback)
 			callback();
 	});
 }
- 
 
-// add to dailyTimer array
-function addToDailyTimer(day, startTime, endTime, blockType, callback)
+/* add all intervals in intervalsArray to the dailyTimer array 
+ * 
+ * interval = {
+ *             "day": "monday" or ... or "sunday", 
+ *			   "startHour": int,
+ *             "startMinute": int,
+ *             "endHour": int,
+ *             "endMinute": int,
+ *             "blockType": "whitelist" or "blacklist"
+ *			  }
+ */
+function addToDailyTimer(intervalsArray, callback)
 {
 	getMap(function(map)
 	{
-			var dailyTimer = map["dailyTimer"];
-			if (dailyTimer == undefined) {
-				var newTime = [];
-				newTime.push({"day": day, "startTime": startTime, "endTime": endTime, "blockType": blockType});
-				setMap({"dailyTimer": newTime}, function()
-				{
-					if (typeof callback == "function")
-						callback();
-				});
+		var dailyTimer = map["dailyTimer"];
 
-			}
-			else {
-				dailyTimer.push({"day": day, "startTime": startTime, "endTime": endTime, "blockType": blockType});
-				setMap({"dailyTimer": dailyTimer}, function()
+		if (dailyTimer == undefined)
+		{
+			dailyTimer = [];
+		}
+
+		/* remove any intervals from intervalsArray that overlap an interval in dailyTimer */
+		for (var i = intervalsArray.length - 1; i >= 0; i--)
+			for (var j = 0; j < dailyTimer.length; j++)
+			{
+				console.log("intervalsArray["+i+"] = "+intervalsArray[i]);
+				console.log("dailyTimer["+j+"] = "+dailyTimer[j]);
+
+				var a = intervalsArray[i];
+				var b = dailyTimer[j];
+				var as = intervalsArray[i].startHour * 60 + intervalsArray[i].startMinute;
+				var ae = intervalsArray[i].endHour * 60 + intervalsArray[i].endMinute;
+				var bs = dailyTimer[j].startHour * 60 + dailyTimer[j].startMinute;
+				var be = dailyTimer[j].endHour * 60 + dailyTimer[j].endMinute;
+
+				if (a.day === b.day && ((as >= bs && as < be) || (ae > bs && ae <= be)))
 				{
-					if (typeof callback == "function")
-						callback();
-				});
+					alert("An interval that you specified overlaps a pre-existing Daily Timer interval.");
+					console.log("DUPLICATE FOUND");
+					intervalsArray.splice(i, 1);
+					break;
+				} else { console.log("NOT DUP"); }
 			}
+
+		for (var k = 0; k < intervalsArray.length; k++)
+			dailyTimer.push(intervalsArray[k]);	
 			
+		saveDailyTimer(dailyTimer, function()
+		{
+			if (typeof callback == "function")
+				callback();
+		});
+	});
+}
+
+function deleteFromDailyTimer(interval, callback)
+{
+	getDailyTimer(function(dailyTimer)
+	{	
+		dailyTimer.pop(interval);
+
+		saveDailyTimer(dailyTimer, function()
+		{
+			if (typeof callback == "function")
+				callback();
+		});
 	});
 }
 

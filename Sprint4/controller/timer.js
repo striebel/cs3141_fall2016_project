@@ -7,16 +7,19 @@ var intervalID;
 
 var hoursSpan, minutesSpan, secondsSpan;
 
+/*
 document.addEventListener("DOMContentLoaded", function()
 {
 	intervalID = setInterval(secondElapsed, 1000);
 	timerInit();
 });
+*/
 
 function exit()
 {
 	clearInterval(intervalID);
-	window.close();
+	paintMainMenu();
+	paintTimerOff();
 }
 
 function setTime(hours, minutes, seconds)
@@ -28,9 +31,9 @@ function setTime(hours, minutes, seconds)
 
 function getTime()
 {
-	var hours = hoursSpan.innerHTML;
-	var minutes = minutesSpan.innerHTML;
-	var seconds = secondsSpan.innerHTML;
+	var hours   = parseInt(hoursSpan.innerHTML);
+	var minutes = parseInt(minutesSpan.innerHTML);
+	var seconds = parseInt(secondsSpan.innerHTML);
 	return { "hours": hours, "minutes": minutes, "seconds": seconds };
 }
 
@@ -50,7 +53,7 @@ function timerInit()
 
 				if (secondsRemaining <= 0)
 				{
-					//exit();
+					exit();
 				}
 				else
 				{
@@ -60,9 +63,13 @@ function timerInit()
 					var seconds = secondsRemaining - (minutes * 60);
 
 					var clock = document.getElementById("clockdiv");
-					hoursSpan = clock.querySelector('.hours');
-					minutesSpan = clock.querySelector('.minutes');
-					secondsSpan = clock.querySelector('.seconds');
+					console.log("clock = "+clock);
+
+					hoursSpan   = document.getElementById("hrb");
+					minutesSpan = document.getElementById("minb");
+					secondsSpan = document.getElementById("secb");
+
+					console.log("(hr, min, sec) = "+hoursSpan+","+minutesSpan+","+secondsSpan);
 
 					setTime(hours, minutes, seconds);
 				}

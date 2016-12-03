@@ -4,11 +4,13 @@
 
 var intervalID = setInterval(timerEvent, 1000);
 
-console.log("0");
+var debug = false;
+
+if (debug) console.log("0");
 
 function timerEvent() 
 {
-	console.log("1");	
+	if (debug)console.log("1");	
 
 	getDailyTimer(function(dailyTimer)
 	{	
@@ -50,28 +52,30 @@ function timerEvent()
 					}
 				}
 
+				if (debug){
 				console.log("intervalDay = "+day);
 				console.log("startSecond = "+startSecond);
 				console.log("endSecond = "+endSecond);
 				console.log("currentDay = "+date.getDay());
 				console.log("currentSecond = "+currentSecond);
 				console.log("dailyTimerIsActive = "+dailyTimerIsActive);
+				}
 			}
 
 			if (dailyTimerIsActive || dailyTimerStatus == "enabled")
 			{
 
-			console.log("IN 1");
+			if (debug)console.log("IN 1");
 
 				setTimerDisabled(function()
 				{
 
-			console.log("IN 2");
+			if (debug)console.log("IN 2");
 
 					setDailyTimerEnabled(function()
 					{
 
-			console.log("IN 3");
+			if (debug)console.log("IN 3");
 
 
 						dailyTimerIsActive = false;
@@ -109,7 +113,7 @@ function timerEvent()
 							}
 						}
 
-			console.log("IN 4");
+			if (debug)console.log("IN 4");
 
 
 						if (!dailyTimerIsActive)
@@ -122,7 +126,7 @@ function timerEvent()
 						else
 						{
 
-							console.log("HERE HERE!!!");
+							if (debug)console.log("HERE HERE!!!");
 
 							var blockType = dailyTimer[i].blockType;
 
@@ -137,27 +141,28 @@ function timerEvent()
 				getTimerStatus(function(timerStatus)
 				{
 
-					console.log("2");
+					if (debug)console.log("2");
 
 					if (timerStatus == "enabled")
 					{
 
-						console.log("3");
+						if (debug)console.log("3");
 
 						getTimerTime(function(timerTime)
 						{
 
-							console.log("4");
+							if (debug)console.log("4");
 
 							var currentSeconds = Math.round(new Date().getTime() / 1000);
 							var stopSeconds = timerTime[1];                                /* timerTime == [ startSecondsSinceTheEpoch, endSecondsSinceTheEpoch ] */
 							var remainingSeconds = stopSeconds - currentSeconds
 
-							console.log("currentSeconds: " + currentSeconds);
+							if (debug) {console.log("currentSeconds: " + currentSeconds);
 							console.log("stopSeconds: " + stopSeconds);
 							console.log("remainingSeconds: " + remainingSeconds);
+							}
 
-							if (remainingSeconds <= 1) /* actually should be <= 0, but 1 is used as insurance to account for inherent inaccuracy of this method */
+							if (remainingSeconds <= 0) /* actually should be <= 0, but 1 is used as insurance to account for inherent inaccuracy of this method */
 							{
 
 								console.log("5");

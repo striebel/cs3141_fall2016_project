@@ -1,7 +1,7 @@
 // file          : main_menu.js
 // author        : Jacob Striebel 
 //               : Jake Mager
-// last modified : 2016 Nov 15
+// last modified : 2016 Dec 2 
 
 var no_block;
 var blacklist;
@@ -14,7 +14,8 @@ var whitelist_msg = "Whitelist: Exactly sites on your whitelist are not blocked.
 var blackout_msg  = "Blackout: All sites are blocked.";
 
 var timer_enabled_msg  = "Timer Enabled: The current block type will persist until either the timer has expired or the timer is cancelled.";
-var timer_disabled_msg = "Timer Disabled: The current block type will persist indefinitely.";
+var timer_disabled_msg = "Timer Disabled: The current block type will persist until you change it manually.";
+var daily_timer_enabled_msg = "Daily Timer Interval Active: The current block type will persist until the daily interval has elapsed.";
 
 var timer_on_HTML  = "" +
 				"<button id = \"view-timer-btn\" class = \"btn\">View Timer</button><br>" +
@@ -24,6 +25,23 @@ var timer_on_HTML  = "" +
 var timer_off_HTML = "<button id = 'set-timer-btn' class = 'btn'>Set Timer</button> <br> <label id = 'block-type-label'></label><br><label id = 'timer-status-label'></label>";
 
 var set_time = "<div class='time'><div class='stackTime'>HR <br /><input class='timeInput' placeholder='0' type='text' id='setTimeHour' />:</div><div class='stackTime'>MIN<br /> <input class='timeInput' placeholder='15' type='text' id='setTimeMin' /></div></div><input type='submit' id='setTime' value='Set' />"
+
+var set_time_with_seconds =
+"<div class='time'>"+
+	"<div class='stackTime'>"+
+		"HR <br />"+
+		"<input class='timeInput' placeholder='00' type='text' id='setTimeHour' />:"+
+	"</div>"+
+	"<div class='stackTime'>"+
+		"MIN<br />"+
+		"<input class='timeInput' placeholder='00' type='text' id='setTimeMin' />:"+
+	"</div>"+
+	"<div class='stackTime'>"+
+		"SEC<br />"+
+		"<input class='timeInput' placeholder='10' type='text' id='setTimeSec' />"+
+	"</div>"+
+"</div>"+
+"<input type='submit' id='setTime' value='Set' />"
 
 
 /*
@@ -115,7 +133,17 @@ function paintMainMenu()
 			}
 			else if (timerStatus == "disabled")
 			{
-				timerStatusLabel.textContent = timer_disabled_msg;
+				getDailyTimerStatus(function(dailyTimerStatus)
+				{
+					if (dailyTimerStatus == "enabled")
+					{
+						timerStatusLabel.textContent = daily_timer_enabled_msg;
+					}
+					else
+					{
+						timerStatusLabel.textContent = timer_disabled_msg;
+					}
+				});
 			}
 			else
 			{
@@ -132,57 +160,94 @@ function paintTimerOff()
 
 	document.getElementById("set-timer-btn").addEventListener("click", function()
 	{
-		var rightDiv = document.getElementById("div-1-right");
+		getDailyTimerStatus(function(dailyTimerStatus)
+		{
+			if (dailyTimerStatus == "enabled")
+			{
+				alert("The basic timer cannot be set when an interval timer is active.");
+				return;
+			}
 
-		rightDiv.innerHTML = set_time;
-		
-		document.getElementById("setTime").addEventListener("click", function() {
-			var hour = parseInt(document.getElementById("setTimeHour").value);
-			var minute = parseInt(document.getElementById("setTimeMin").value);
+
+			var rightDiv = document.getElementById("div-1-right");
+
+			rightDiv.innerHTML = set_time_with_seconds;
 			
-			//TODO: make function so this is not written so poorly
-			if (isNaN(hour) && isNaN(minute) ) {
-				hour = 0;
-				minute = 15;
-				var startSeconds = Math.round(new Date().getTime() / 1000);			
-				var endSeconds = startSeconds + (hour * 3600) + (minute * 60);
-
-				setTimerEnabled(function()
+			document.getElementById("setTime").addEventListener("click", function()
+			{
+				var hour = parseInt(document.getElementById("setTimeHour").value);
+				var minute = parseInt(document.getElementById("setTimeMin").value);
+				var second = parseInt(document.getElementById("setTimeSec").value);
+	
+				//TODO: make function so this is not written so poorly
+				if (isNaN(hour) && isNaN(minute) && isNaN(second))
 				{
-					saveTimerTime([startSeconds, endSeconds], function()
-					{	
-						paintMainMenu();
-						paintTimerOn();
+					hour = 0;
+					minute = 0;
+					second = 10;
+					var startSeconds = Math.round(new Date().getTime() / 1000);			
+					var endSeconds = startSeconds + (hour * 3600) + (minute * 60) + second;
+
+					setTimerEnabled(function()
+					{
+						saveTimerTime([startSeconds, endSeconds], function()
+						{	
+							paintMainMenu();
+							paintTimerOn();
+
+
+
+
+
+						});
 					});
-				});
-			}
-			else if (isNaN(hour) || isNaN(minute) || hour > 99 || minute > 59) {
+				}
+				else if (isNaN(hour) || isNaN(minute) || isNaN(second) || hour > 99 || hour < 0 || minute > 59 || minute < 0 || second > 59 || second < 0)
+				{
 					rightDiv.innerHTML = "Invalid Time";
-			}
-			else {
-				var startSeconds = Math.round(new Date().getTime() / 1000);			
-				var endSeconds = startSeconds + (hour * 3600) + (minute * 60);
-
-				setTimerEnabled(function()
+				}
+				else
 				{
-					saveTimerTime([startSeconds, endSeconds], function()
-					{	
-						paintMainMenu();
-						paintTimerOn();
+					var startSeconds = Math.round(new Date().getTime() / 1000);
+					var endSeconds = Math.round(startSeconds + (hour * 3600) + (minute * 60) + second);
+
+					setTimerEnabled(function()
+					{
+						saveTimerTime([startSeconds, endSeconds], function()
+						{
+							paintMainMenu();
+							paintTimerOn();
+
+	
+
+						});
 					});
-				});
-			}
+				}
+			});
 		});
 	});
 }
 
 function paintTimerOn()
 {
-	document.getElementById("div-1-right").innerHTML = "<iframe style='padding-top:0px; margin-top:-5px; height:70px; border: none;' src='../timer/timer.html' id='iframe'></iframe><br />"+
-	"<button id = 'cancel-timer-btn' class = 'btn'>Cancel Timer</button><br />" +
-	"<label id= 'block-type-label'></label><br />"+
-	"<label id= 'timer-status-label'></label>";
+/*		document.getElementById("div-1-right").innerHTML = "<iframe style='padding-top:0px; margin-top:-5px; height:70px; border: none;' src='../timer/timer.html' id='iframe'></iframe><br />"+
+		"<button id = 'cancel-timer-btn' class = 'btn'>Cancel Timer</button><br />" +
+		"<label id= 'block-type-label'></label><br />"+
+		"<label id= 'timer-status-label'></label>";
+*/
 
+	document.getElementById("div-1-right").innerHTML =
+	"<div style='padding-top:0px; margin-top:-5px; height:50px; border: none;' id='frame'>"+
+	"Time Remaining <div id='clockdiv'> <span id='hrb'>00</span> : <span id='minb'>00</span> : <span id='secb'>00</span> </div>"+
+	"</div><br />"+
+		"<button id = 'cancel-timer-btn' class = 'btn'>Cancel Timer</button><br />" +
+		"<label id= 'block-type-label'></label><br />"+
+		"<label id= 'timer-status-label'></label>";
+
+
+
+	intervalID = setInterval(secondElapsed, 1000);
+	timerInit();
 
 	document.getElementById("cancel-timer-btn").addEventListener("click", function()
 	{
@@ -210,17 +275,31 @@ document.addEventListener("DOMContentLoaded", function()
 	{
 		getTimerStatus(function(timerStatus)
 		{
-			if (timerStatus == "disabled")
+			getDailyTimerStatus(function(dailyTimerStatus)
 			{
-				setNoBlock(function() { paintMainMenu(); });
-			}
-			else
-			{
-				getBlockStatus(function(blockStatus)
+				if (timerStatus == "disabled" && dailyTimerStatus == "disabled")
 				{
-					document.getElementById("block-type-label").innerHtml = blockStatus +  "will persist until either the timer has elapsed or the timer is cancelled";
-				});
-			}
+					setNoBlock(function() { paintMainMenu(); });
+				}
+				else if (timerStatus == "enabled")
+				{
+					getBlockStatus(function(blockStatus)
+					{
+						document.getElementById("block-type-label").innerHtml = blockStatus +  "will persist until either the timer has elapsed or the timer is cancelled";
+					});
+				}
+				else if (dailyTimerStatus == "enabled")
+				{
+					getBlockStatus(function(blockStatus)
+					{
+						document.getElementById("block-type-label").innerHtml = blockStatus +  "will persist until the currently active daily timer interval has elapsed";
+					});
+				}
+				else
+				{
+					console.log("Error");
+				}
+			});
 		});
 	});
 
@@ -228,17 +307,31 @@ document.addEventListener("DOMContentLoaded", function()
 	{
 		getTimerStatus(function(timerStatus)
 		{
-			if (timerStatus == "disabled")
+			getDailyTimerStatus(function(dailyTimerStatus)
 			{
-				setBlacklist(function() { paintMainMenu(); });
-			}
-			else
-			{
-				getBlockStatus(function(blockStatus)
+				if (timerStatus == "disabled" && dailyTimerStatus == "disabled")
 				{
-					document.getElementById("block-type-label").innerHtml = blockStatus +  "will persist until either the timer has elapsed or the timer is cancelled";
-				});
-			}
+					setBlacklist(function() { paintMainMenu(); });
+				}
+				else if (timerStatus == "enabled")
+				{
+					getBlockStatus(function(blockStatus)
+					{
+						document.getElementById("block-type-label").innerHtml = blockStatus +  "will persist until either the timer has elapsed or the timer is cancelled";
+					});
+				}
+				else if (dailyTimerStatus == "enabled")
+				{
+					getBlockStatus(function(blockStatus)
+					{
+						document.getElementById("block-type-label").innerHtml = blockStatus +  "will persist until the currently active daily timer interval has elapsed";
+					});
+				}
+				else
+				{
+					console.log("Error");
+				}
+			});
 		});
 	});
 
@@ -246,17 +339,31 @@ document.addEventListener("DOMContentLoaded", function()
 	{
 		getTimerStatus(function(timerStatus)
 		{
-			if (timerStatus == "disabled")
+			getDailyTimerStatus(function(dailyTimerStatus)
 			{
-				setWhitelist(function() { paintMainMenu(); });
-			}
-			else
-			{
-				getBlockStatus(function(blockStatus)
+				if (timerStatus == "disabled" && dailyTimerStatus == "disabled")
 				{
-					document.getElementById("block-type-label").innerHtml = blockStatus +  "will persist until either the timer has elapsed or the timer is cancelled";
-				});
-			}
+					setWhitelist(function() { paintMainMenu(); });
+				}
+				else if (timerStatus == "enabled")
+				{
+					getBlockStatus(function(blockStatus)
+					{
+						document.getElementById("block-type-label").innerHtml = blockStatus +  "will persist until either the timer has elapsed or the timer is cancelled";
+					});
+				}
+				else if (dailyTimerStatus == "enabled")
+				{
+					getBlockStatus(function(blockStatus)
+					{
+						document.getElementById("block-type-label").innerHtml = blockStatus +  "will persist until the currently active daily timer interval has elapsed";
+					});
+				}
+				else
+				{
+					console.log("Error");
+				}
+			});
 		});
 	});
 
@@ -264,17 +371,31 @@ document.addEventListener("DOMContentLoaded", function()
 	{
 		getTimerStatus(function(timerStatus)
 		{
-			if (timerStatus == "disabled")
+			getDailyTimerStatus(function(dailyTimerStatus)
 			{
-				setBlackout(function() { paintMainMenu(); });
-			}
-			else
-			{
-				getBlockStatus(function(blockStatus)
+				if (timerStatus == "disabled" && dailyTimerStatus == "disabled")
 				{
-					document.getElementById("block-type-label").innerHtml = blockStatus +  "will persist until either the timer has elapsed or the timer is cancelled";
-				});
-			}
+					setBlackout(function() { paintMainMenu(); });
+				}
+				else if (timerStatus == "enabled")
+				{
+					getBlockStatus(function(blockStatus)
+					{
+						document.getElementById("block-type-label").innerHtml = blockStatus +  "will persist until either the timer has elapsed or the timer is cancelled";
+					});
+				}
+				else if (dailyTimerStatus == "enabled")
+				{
+					getBlockStatus(function(blockStatus)
+					{
+						document.getElementById("block-type-label").innerHtml = blockStatus +  "will persist until the currently active daily timer interval has elapsed";
+					});
+				}
+				else
+				{
+					console.log("Error");
+				}
+			});
 		});
 	});
 

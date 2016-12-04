@@ -1,0 +1,50 @@
+<!-- <h1>Recurring Timer</h1> /-->
+
+<div class = "content">
+ <h3>Stop Procrastination's daily timer provides the functionality to preset recurring time intervals when blacklisting or whitelisting will be active.</h3>
+
+<div id="pickingForm">
+   <div style=" display: inline; width:100px;">
+     <b style="vertical-align: top; display:inline-block; margin-top:0px;">Day:</b>
+      <div id="days" style="vertical-align: top; display:inline-block;">
+       <div style="vertical-align: top; display:inline-block;">
+         <input type="checkbox" name="day" value="monday">Monday<br>
+         <input type="checkbox" name="day" value="tuesday">Tuesday<br>
+         <input type="checkbox" name="day" value="wednesday">Wednesday<br />
+         <input type="checkbox" name="day" value="thursday">Thursday<br /><br />
+         <input type="submit" id='enterTimer' value="Add" />
+       </div>
+       <div style="vertical-align: top; display:inline-block">
+         <input type="checkbox" name="day" value="friday">Friday<br>
+         <input type="checkbox" name="day" value="saturday">Saturday<br>
+         <input type="checkbox" name="day" value="sunday">Sunday<br>
+       </div>
+     </div>
+     <div style="margin-left:25px; display:inline-block">
+     <b>Start time:</b> <input type="text" min=1 max=12 size=3 id='startTimeHour' placeholder="HR" /><b>:</b><input max=60 min=0 type="text" size=3 id='startTimeMinute' placeholder="MIN"/>
+     <select id='startTimeSelection'>
+       <option value='am'>AM</option>
+       <option value='pm'>PM</option>
+     </select> <br />
+      <b>End time:</b><input style="margin-left:10px; margin-top:4px;" type="text" min=1 max=12 size=3 id='endTimeHour' placeholder="HR" /><b>:</b><input style="margin-top:4px;" max=60 min=0 type="text" size=3 id='endTimeMinute' placeholder="MIN"/>
+        <select style="margin-top:4px;" id='endTimeSelection'>
+       <option value='am'>AM</option>
+       <option value='pm'>PM</option>
+        </select>
+     <div  style="padding-top:1px;">
+     <br /><b>Block type:</b>
+    <select id='blockType'>
+      <option value='blacklist'>Black List</option>
+      <option value='whitelist'>White List</option>
+    </select>
+    </div>
+    </div>
+   </div>
+  </div>
+
+<br />
+   <select id="dailyTimerForm" size="10" multiple="" style=" word-spacing: 30px; width:450px;"></select><button id="removeButton" style="vertical-align:top;">Remove Selected</button>
+</div>
+<script src="../../model/model.js"></script>
+<script type="text/javascript" src="../../controller/daily_timer.js"></script>
+

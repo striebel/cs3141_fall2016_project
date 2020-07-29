@@ -1,7 +1,4 @@
 # cs3141_fall2016_project
-This repository is the home of team ACJ^3's software project.
+This repository contains the source code of the software project that team ACJ^3 completed for cs3141.
 
-To use jQuery, add the following to the top of the <head> in the desired HTML file
-	<script src="jquery-3.1.1.min.js"></script>
-It must be the first src in the <head> to be used in other js files
-*Should already be included in the background
+The project, StopProcrastination, is a Google Chrome Extension and is available on the Chrome Web Store (https://chrome.google.com/webstore/detail/stopprocrastination/pkodldcldpmpacpdgneddhlnbpfebjff).
